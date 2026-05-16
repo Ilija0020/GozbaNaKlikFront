@@ -1,0 +1,30 @@
+@use './variables' as *;
+
+// Flexbox helper
+@mixin flex($justify: center, $align: center, $direction: row) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $align;
+}
+
+// Media Queries
+@mixin respond-to($breakpoint) {
+  @media (max-width: $breakpoint) {
+    @content;
+  }
+}
+
+// Globalni stil za dugmiće
+@mixin button-base {
+  display: inline-block;
+  padding: 12px 24px;
+  border-radius: $br-pill;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  text-decoration: none;
+  text-align: center;
+}

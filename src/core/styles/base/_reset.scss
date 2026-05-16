@@ -1,0 +1,27 @@
+@use '../abstracts/variables' as *;
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  // Bolt koristi veoma "čiste" geometrijske fontove
+  font-family: 'Euclid Circular B', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: $color-text-dark;
+  background-color: $color-white; // Bolt preferira čisto belu osnovu
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+}

@@ -1,0 +1,69 @@
+@use '../../styles/abstracts/variables' as *;
+@use '../../styles/abstracts/mixins' as *;
+
+.header {
+  background-color: $color-white;
+  // Bolt nema senku na headeru dok ne skroluješ, ali za sada stavljamo veoma blagu
+  border-bottom: 1px solid rgba(0,0,0,0.05); 
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: $spacing-md 0;
+
+  &__container {
+    @include flex(space-between, center);
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 $spacing-lg;
+  }
+
+  &__logo {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: $color-primary;
+    letter-spacing: -1px;
+    
+    span {
+      color: $color-text-dark;
+    }
+  }
+
+  &__nav {
+    @include flex(flex-end, center);
+    gap: $spacing-sm;
+  }
+
+  &__btn {
+    @include button-base;
+    padding: 10px 20px;
+    font-size: 0.95rem;
+    
+    &--login {
+      background-color: transparent;
+      color: $color-text-dark;
+      
+      &:hover {
+        background-color: $color-bg-light;
+      }
+    }
+
+    &--register {
+      background-color: $color-primary;
+      color: $color-white;
+
+      &:hover {
+        background-color: $color-primary-dark;
+      }
+    }
+  }
+
+  @include respond-to($bp-mobile) {
+    &__nav {
+      gap: 4px;
+    }
+    &__btn {
+      padding: 8px 12px;
+      font-size: 0.85rem;
+    }
+  }
+}

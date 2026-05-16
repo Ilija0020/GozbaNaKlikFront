@@ -1,0 +1,109 @@
+@use '../../../core/styles/abstracts/variables' as *;
+@use '../../../core/styles/abstracts/mixins' as *;
+
+.hero {
+  @include flex(center, flex-start, column);
+  height: 100%; // Koristi tačno onoliko prostora koliko je ostalo između headera i footera
+  background-image: url('../../../assets/hero-bg.jpg');
+  background-size: cover;
+  background-position: right center; // Fokusiramo sliku na desnu stranu gde je lik
+  background-repeat: no-repeat;
+  padding: $spacing-xxxl $spacing-lg;
+  text-align: left; 
+  width: 100%;
+  
+  // Dodajemo tamnu prozirnu foliju preko slike (overlay) da bi se bela slova uvek savršeno čitala
+  box-shadow: inset 0 0 0 2000px rgba(0, 0, 0, 0.2);
+
+  &__content {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  &__badge {
+    display: none; 
+  }
+
+  &__title {
+    font-size: 4.5rem; 
+    font-weight: 800;
+    color: $color-white; // Bela slova umesto crnih zbog tamne slike
+    line-height: 1.1;
+    margin-bottom: $spacing-lg;
+    letter-spacing: -2px;
+    max-width: 600px;
+
+    span {
+      color: $color-secondary; // Crna boja span-a se ne bi videla, stavljamo zutu/narandzastu iz varijabli
+    }
+  }
+
+  &__subtitle {
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: #f1f2f6; // Svetlo siva
+    margin-bottom: $spacing-xl;
+    max-width: 500px;
+  }
+
+  &__actions {
+    @include flex(flex-start, center);
+    gap: $spacing-md;
+
+    @include respond-to($bp-mobile) {
+      flex-direction: column;
+      align-items: stretch;
+      
+      .hero__btn {
+        width: 100%;
+      }
+    }
+  }
+
+  &__btn {
+    @include button-base;
+    padding: 16px 32px;
+    font-size: 1.1rem;
+
+    &--primary {
+      background-color: $color-primary;
+      color: $color-white;
+      border: 2px solid $color-primary; // Dodat border da izgleda modernije
+
+      &:hover {
+        background-color: $color-primary-dark;
+        border-color: $color-primary-dark;
+      }
+    }
+
+    &--secondary {
+      background-color: $color-white;
+      color: $color-text-dark;
+
+      &:hover {
+        background-color: #f1f2f6;
+      }
+    }
+  }
+
+  @include respond-to($bp-tablet) {
+    text-align: center;
+    align-items: center;
+
+    &__title {
+      font-size: 3rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    &__subtitle {
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    &__actions {
+      justify-content: center;
+    }
+  }
+}

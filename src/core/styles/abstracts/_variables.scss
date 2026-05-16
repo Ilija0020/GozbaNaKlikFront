@@ -1,0 +1,33 @@
+// Boje (Bolt Food inspirisano)
+$color-primary: #34D186;      // Bolt zelena
+$color-primary-dark: #2BBA75; // Tamnija zelena za hover
+$color-secondary: #000000;    // Crna za akcente
+$color-text-dark: #1D1D21;    // Skoro crna (Bolt default text)
+$color-text-light: #8A8D93;   // Siva za opise
+$color-bg-light: #F6F6F6;     // Blago siva pozadina
+$color-bg-subtle: #FAFAFA;    // Skoro bela za kartice
+$color-white: #ffffff;
+
+// Spacing
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+$spacing-xxl: 64px;
+$spacing-xxxl: 96px;
+
+// Border Radius
+$br-sm: 8px;
+$br-md: 16px;
+$br-lg: 24px;
+$br-pill: 100px; // Bolt jako voli okrugla dugmad
+
+// Shadows
+$shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+$shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+$shadow-lg: 0 16px 32px rgba(0, 0, 0, 0.12);
+
+// Breakpoints
+$bp-mobile: 480px;
+$bp-tablet: 768px;
+$bp-desktop: 1024px;

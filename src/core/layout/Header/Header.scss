@@ -1,0 +1,76 @@
+@use '../../styles/abstracts/variables' as *;
+@use '../../styles/abstracts/mixins' as *;
+
+.header {
+  background-color: $color-white;
+  box-shadow: $shadow-sm; 
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: $spacing-md 0;
+
+  &__container {
+    @include flex(space-between, center);
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 $spacing-lg;
+  }
+
+  &__logo {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: $color-primary;
+    letter-spacing: -1px;
+    transition: opacity 0.3s ease; 
+    
+    &:hover {
+      opacity: 0.8;
+    }
+    
+    span {
+      color: $color-text-dark;
+    }
+  }
+
+  &__nav {
+    @include flex(flex-end, center);
+    gap: $spacing-sm;
+  }
+
+  &__btn {
+    @include button-base;
+    padding: 10px 20px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;      
+    
+    &--login {
+      background-color: transparent;
+      color: $color-text-dark;
+      border: 1px solid rgba(0,0,0,0.1); 
+      
+      &:hover {
+        background-color: $color-bg-light;
+        border-color: rgba(0,0,0,0.2); 
+      }
+    }
+
+    &--register {
+      background-color: $color-primary;
+      color: $color-white;
+
+      &:hover {
+        background-color: $color-primary-dark;
+      }
+    }
+  }
+
+  @include respond-to($bp-mobile) {
+    &__nav {
+      gap: 4px;
+    }
+    &__btn {
+      padding: 8px 12px;
+      font-size: 0.85rem;
+    }
+  }
+}

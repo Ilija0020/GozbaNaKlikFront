@@ -2,11 +2,11 @@
 @use '../../styles/abstracts/mixins' as *;
 
 .footer {
-  background-color: $color-bg-light; // Svetla pozadina
+  background-color: $color-bg-light; 
   color: $color-text-dark; 
-  padding: $spacing-md 0; // Drastično smanjen padding da footer bude tanak
+  padding: $spacing-md 0; 
   margin-top: auto; 
-  border-top: 1px solid rgba(0,0,0, 0.05); // Diskretna gornja ivica
+  border-top: 1px solid rgba(0,0,0,0.05); 
 
   &__container {
     @include flex(space-between, center);
@@ -39,7 +39,7 @@
     a {
       font-size: 0.85rem;
       color: $color-text-light; 
-      transition: color 0.3s;
+      transition: color 0.3s ease;
 
       &:hover {
         color: $color-primary; 
@@ -51,6 +51,6 @@
     font-size: 0.75rem;
     color: $color-text-light;
     text-align: center;
-    margin-top: $spacing-sm;
+    margin-top: $spacing-sm; 
   }
 }

@@ -9,10 +9,9 @@
 }
 
 body {
-  // Bolt koristi veoma "čiste" geometrijske fontove
   font-family: 'Euclid Circular B', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   color: $color-text-dark;
-  background-color: $color-white; // Bolt preferira čisto belu osnovu
+  background-color: $color-white; 
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }

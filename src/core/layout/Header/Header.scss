@@ -3,8 +3,7 @@
 
 .header {
   background-color: $color-white;
-  // Bolt nema senku na headeru dok ne skroluješ, ali za sada stavljamo veoma blagu
-  border-bottom: 1px solid rgba(0,0,0,0.05); 
+  box-shadow: $shadow-sm; 
   position: sticky;
   top: 0;
   z-index: 100;
@@ -22,6 +21,11 @@
     font-weight: 800;
     color: $color-primary;
     letter-spacing: -1px;
+    transition: opacity 0.3s ease; 
+    
+    &:hover {
+      opacity: 0.8;
+    }
     
     span {
       color: $color-text-dark;
@@ -37,13 +41,16 @@
     @include button-base;
     padding: 10px 20px;
     font-size: 0.95rem;
+    transition: all 0.3s ease;      
     
     &--login {
       background-color: transparent;
       color: $color-text-dark;
+      border: 1px solid rgba(0,0,0,0.1); 
       
       &:hover {
         background-color: $color-bg-light;
+        border-color: rgba(0,0,0,0.2); 
       }
     }
 

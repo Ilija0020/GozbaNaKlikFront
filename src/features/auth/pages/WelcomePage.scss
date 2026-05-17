@@ -1,19 +1,17 @@
-@use '../../../core/styles/abstracts/variables' as *;
-@use '../../../core/styles/abstracts/mixins' as *;
+@use "../../../core/styles/abstracts/variables" as *;
+@use "../../../core/styles/abstracts/mixins" as *;
 
 .hero {
-  @include flex(center, flex-start, column);
-  height: 100%; // Koristi tačno onoliko prostora koliko je ostalo između headera i footera
-  background-image: url('../../../assets/hero-bg.jpg');
-  background-size: cover;
-  background-position: right center; // Fokusiramo sliku na desnu stranu gde je lik
+  @include flex(flex-start, flex-start, column);
+  flex: 1; 
+  background-color: $color-primary;
+  background-image: url("../../../assets/hero-bg.png");
+  background-size: contain;
+  background-position: right bottom;
   background-repeat: no-repeat;
-  padding: $spacing-xxxl $spacing-lg;
-  text-align: left; 
+  padding: 20px $spacing-lg; 
+  text-align: left;
   width: 100%;
-  
-  // Dodajemo tamnu prozirnu foliju preko slike (overlay) da bi se bela slova uvek savršeno čitala
-  box-shadow: inset 0 0 0 2000px rgba(0, 0, 0, 0.2);
 
   &__content {
     max-width: 1200px;
@@ -22,29 +20,38 @@
   }
 
   &__badge {
-    display: none; 
+    display: none;
   }
 
   &__title {
-    font-size: 4.5rem; 
+    font-size: 4.5rem;
     font-weight: 800;
-    color: $color-white; // Bela slova umesto crnih zbog tamne slike
+    color: $color-white; 
     line-height: 1.1;
     margin-bottom: $spacing-lg;
     letter-spacing: -2px;
     max-width: 600px;
 
+    &--mobile {
+      display: none; 
+    }
+
     span {
-      color: $color-secondary; // Crna boja span-a se ne bi videla, stavljamo zutu/narandzastu iz varijabli
+      color: $color-secondary; 
     }
   }
 
   &__subtitle {
     font-size: 1.4rem;
     font-weight: 400;
-    color: #f1f2f6; // Svetlo siva
+    color: $color-white;
     margin-bottom: $spacing-xl;
     max-width: 500px;
+    opacity: 0.9;
+
+    &--mobile {
+      display: none; 
+    }
   }
 
   &__actions {
@@ -54,7 +61,7 @@
     @include respond-to($bp-mobile) {
       flex-direction: column;
       align-items: stretch;
-      
+
       .hero__btn {
         width: 100%;
       }
@@ -67,43 +74,72 @@
     font-size: 1.1rem;
 
     &--primary {
-      background-color: $color-primary;
+      background-color: $color-secondary;
       color: $color-white;
-      border: 2px solid $color-primary; // Dodat border da izgleda modernije
+      border: 2px solid $color-secondary;
 
       &:hover {
-        background-color: $color-primary-dark;
-        border-color: $color-primary-dark;
+        background-color: #333;
+        border-color: #333;
       }
     }
 
     &--secondary {
       background-color: $color-white;
       color: $color-text-dark;
+      border: 2px solid $color-white;
 
       &:hover {
         background-color: #f1f2f6;
+        border-color: #f1f2f6;
       }
     }
   }
 
-  @include respond-to($bp-tablet) {
+  @include respond-to(820px) {
     text-align: center;
     align-items: center;
+    background-position: center bottom;
+    background-size: 360px; 
+    padding-top: 40px;
+    padding-bottom: 520px; 
 
     &__title {
-      font-size: 3rem;
+      font-size: 2.8rem;
       margin-left: auto;
       margin-right: auto;
+
+      &--desktop {
+        display: none; 
+      }
+      &--mobile {
+        display: block; 
+      }
     }
-    
+
     &__subtitle {
       margin-left: auto;
       margin-right: auto;
+
+      &--desktop {
+        display: none; 
+      }
+      &--mobile {
+        display: block; 
+      }
     }
-    
+
     &__actions {
       justify-content: center;
+    }
+  }
+
+  @include respond-to($bp-mobile) { 
+    padding-bottom: 300px; 
+    background-size: 80%; 
+    
+    &__title {
+      font-size: 2rem;
     }
   }
 }

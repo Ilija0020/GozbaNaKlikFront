@@ -11,9 +11,9 @@ import OwnerHomePage from "./features/owner/pages/OwnerHomePage";
 import EmployeeHomePage from "./features/employee/pages/EmployeeHomePage";
 import CourierHomePage from "./features/courier/pages/CourierHomePage";
 import AdminHomePage from "./features/admin/pages/AdminHomePage";
-import "./core/global.scss"
-import RegisterByAdmin from "./features/auth/pages/RegisterByAdmin"
+import RegisterByAdmin from "./features/admin/pages/RegisterByAdmin"
 import UserList from "./features/admin/components/userList/UserList"
+import "./core/global.scss"
 
 const App = () => {
   return (
@@ -25,31 +25,49 @@ const App = () => {
             <Route path="/" element={<WelcomePage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            
             <Route path="/customer/home" element={
-            <ProtectedRoute allowedRoles={["Customer"]}>
-              <CustomerHomePage />
-                </ProtectedRoute>
-                  } />
+              <ProtectedRoute allowedRoles={["Customer"]}>
+                <CustomerHomePage />
+              </ProtectedRoute>
+            } />
+            
             <Route path="/owner/home" element={
-                <ProtectedRoute allowedRoles={["Owner"]}>
-                  <OwnerHomePage />
-                  </ProtectedRoute>
-                  } />
+              <ProtectedRoute allowedRoles={["Owner"]}>
+                <OwnerHomePage />
+              </ProtectedRoute>
+            } />
+            
             <Route path="/employee/home" element={
-                <ProtectedRoute allowedRoles={["Employee"]}>
-                  <EmployeeHomePage />
-                  </ProtectedRoute>
-                  } />
+              <ProtectedRoute allowedRoles={["Employee"]}>
+                <EmployeeHomePage />
+              </ProtectedRoute>
+            } />
+            
             <Route path="/courier/home" element={
-                <ProtectedRoute allowedRoles={["Courier"]}>
-                  <CourierHomePage />
-                  </ProtectedRoute>
-                  } />
+              <ProtectedRoute allowedRoles={["Courier"]}>
+                <CourierHomePage />
+              </ProtectedRoute>
+            } />
+            
             <Route path="/admin/home" element={
-                <ProtectedRoute allowedRoles={["Admin"]}>
-                  <AdminHomePage />
-                  </ProtectedRoute>
-                  } />
+              <ProtectedRoute allowedRoles={["Admin"]}>
+                <AdminHomePage />
+              </ProtectedRoute>
+            } />
+
+            <Route path="/admin/users" element={
+              <ProtectedRoute allowedRoles={["Admin"]}>
+                <UserList />
+              </ProtectedRoute>
+            } />
+
+            <Route path="/admin/register-user" element={
+              <ProtectedRoute allowedRoles={["Admin"]}>
+                <RegisterByAdmin />
+              </ProtectedRoute>
+            } />
+
           </Routes>
         </main>
         <Footer />

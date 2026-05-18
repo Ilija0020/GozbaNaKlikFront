@@ -2,8 +2,6 @@
 @use "../../../../core/styles/abstracts/mixins" as *;
 
 .user-list-page {
-  padding: $spacing-xl;
-
   .user-list-title {
     font-size: 1.5rem;
     font-weight: 700;

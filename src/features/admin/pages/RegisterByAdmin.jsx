@@ -1,27 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
-import { authService } from "../services/authService";
+import { useNavigate } from "react-router-dom";
+import { authService } from "../../auth/services/authService";
+import DashboardLayout from "../../../core/layout/DashboardLayout/DashboardLayout";
+import "./RegisterByAdmin.scss";
 
 const RegisterByAdmin = () => {
   const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm();
   const [serverError, setServerError] = useState("");
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const loggedInUserString = localStorage.getItem("user");
-
-    if (!loggedInUserString) {
-        navigate("/login");
-        return;
-    }
-    const user = JSON.parse(loggedInUserString);
-
-    if (user.role !== "Admin") {
-      navigate("/");
-      return;
-    }
-  }, [navigate]);
 
   const onSubmit = async (data) => {
     try {
@@ -46,16 +33,19 @@ const RegisterByAdmin = () => {
       console.log("Uspesna registracija!");
       reset(); 
       
-      navigate("/");
+      navigate("/admin/users");
     } catch (error) {
       setServerError(error.response?.data || "Došlo je do greške prilikom registracije.");
     }
   };
 
   return (
-    <div className="auth-page">
-      <div className="auth-card auth-card--wide">
-        <h2>Registracija</h2>
+    <DashboardLayout 
+      roleTitle="Sistemski Admin" 
+      welcomeMessage="Kreirajte nove naloge za vlasnike restorana i kurire."
+    >
+      <div className="admin-register-form">
+        <h2>Registracija novog korisnika</h2>
         
         <form className="auth-form" onSubmit={handleSubmit(onSubmit)}>
           
@@ -166,15 +156,11 @@ const RegisterByAdmin = () => {
           {serverError && <div className="error-message" style={{textAlign: "center", marginTop: "10px"}}>{serverError}</div>}
 
           <button type="submit" className="btn-submit" disabled={isSubmitting}>
-            {isSubmitting ? "Učitavanje..." : "Registruj se"}
+            {isSubmitting ? "Učitavanje..." : "Registruj korisnika"}
           </button>
         </form>
-
-        <div className="auth-links">
-          Već imate nalog? <Link to="/login">Prijavite se</Link>
-        </div>
       </div>
-    </div>
+    </DashboardLayout>
   );
 };
 

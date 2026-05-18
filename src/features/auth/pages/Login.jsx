@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { authService } from "../services/authService";
+import { getHomeRouteByRole } from "../../../core/utils/roleUtils";
 
 const Login = () => {
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
@@ -22,9 +23,12 @@ const Login = () => {
       };
 
       localStorage.setItem("user", JSON.stringify(userDataToSave));
+
+      const homeRoute = getHomeRouteByRole(user.role);
+      
+      navigate(homeRoute);
       console.log("Uspesna prijava! Sačuvan korisnik:", userDataToSave);
       
-      navigate("/");
     } catch (error) {
       setServerError(error.response?.data || "Došlo je do greške prilikom prijave.");
     }

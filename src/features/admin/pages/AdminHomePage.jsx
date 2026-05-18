@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import DashboardLayout from "../../../core/layout/DashboardLayout/DashboardLayout";
 import "./AdminHomePage.scss";
 
@@ -25,21 +26,21 @@ const AdminHomePage = () => {
         </div>
 
         <div className="dashboard-grid">
-          <div className="action-card">
+          <Link to="/admin/users" className="action-card">
             <div className="card-icon">👥</div>
             <h3>Korisnički nalozi</h3>
             <p>Pregled, blokiranje i izmena svih korisnika.</p>
-          </div>
-          <div className="action-card">
+          </Link>
+          <Link to="/admin/register-user" className="action-card">
             <div className="card-icon">👔</div>
             <h3>Registruj Vlasnika</h3>
             <p>Kreiraj novi verifikovani nalog za ugostitelja.</p>
-          </div>
-          <div className="action-card">
+          </Link>
+          <Link to="/admin/register-user" className="action-card">
             <div className="card-icon">🚴</div>
             <h3>Registruj Kurira</h3>
             <p>Dodaj novog dostavljača u sistem dostave.</p>
-          </div>
+          </Link>
         </div>
 
         <div className="status-panel">

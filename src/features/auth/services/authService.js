@@ -1,6 +1,6 @@
-import axios from 'axios';
+import AxiosConfig from "../../../core/services/apiAxios";
 
-const API_URL = 'http://localhost:5128/api/Auth';
+const RESOURCE = '/api/Auth';
 
 const login = async (username, password) => {
 
@@ -12,16 +12,22 @@ const login = async (username, password) => {
     email: "test@test.com"
   };
 
-  const response = await axios.post(`${API_URL}/login`, payload);
+  const response = await AxiosConfig.post(`${RESOURCE}/login`, payload);
   return response.data;
 };
 
 const register = async (userData) => {
-  const response = await axios.post(`${API_URL}/register`, userData);
+  const response = await AxiosConfig.post(`${RESOURCE}/register`, userData);
+  return response.data;
+};
+
+const registerByAdmin = async (userData) => {
+  const response = await AxiosConfig.post(`${RESOURCE}/register-admin`, userData);
   return response.data;
 };
 
 export const authService = {
   login,
-  register
+  register,
+  registerByAdmin
 };

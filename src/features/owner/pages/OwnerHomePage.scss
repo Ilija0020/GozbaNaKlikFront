@@ -1,0 +1,27 @@
+.owner-home {
+  .stats-container {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+
+    .stat-box {
+      flex: 1;
+
+      h2 {
+        color: #ff4757;
+        margin: 0 0 5px 0;
+      }
+
+      p {
+        margin: 0;
+        color: #747d8c;
+        font-size: 14px;
+      }
+
+      & + .stat-box {
+        border-left: 1px solid #eee;
+        padding-left: 40px;
+      }
+    }
+  }
+}

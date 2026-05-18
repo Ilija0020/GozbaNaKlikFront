@@ -1,0 +1,39 @@
+.admin-home {
+  .counters-grid {
+    margin-bottom: 25px;
+  }
+
+  .counter-item {
+    background: #f1f2f6;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+
+    strong {
+      font-size: 20px;
+      color: #2f3542;
+    }
+
+    .counter-label {
+      color: #57606f;
+      font-size: 12px;
+      margin-top: 4px;
+    }
+  }
+
+  .logs-list {
+    padding-left: 20px;
+    margin: 0;
+    color: #2f3542;
+    font-size: 14px;
+    line-height: 2;
+
+    li {
+      .log-time {
+        color: #747d8c;
+        font-size: 12px;
+        margin-left: 6px;
+      }
+    }
+  }
+}

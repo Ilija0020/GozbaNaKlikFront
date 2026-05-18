@@ -1,5 +1,6 @@
 import React from "react";
 import DashboardLayout from "../../../core/layout/DashboardLayout/DashboardLayout";
+import "./CustomerHomePage.scss";
 
 const CustomerHomePage = () => {
   return (
@@ -7,36 +8,38 @@ const CustomerHomePage = () => {
       roleTitle="Kupac" 
       welcomeMessage="Pregledaj najbolje restorane i naruči omiljenu hranu u par klikova."
     >
-      <div style={{ background: '#fff2f2', padding: '30px', borderRadius: '12px', textAlign: 'center', marginBottom: '25px' }}>
-        <h3 style={{ margin: '0 0 15px 0', color: '#2f3542' }}>🍕 Šta ti se jede danas?</h3>
-        <input 
-          type="text" 
-          placeholder="Pretraži restorane, kuhinje ili jela..." 
-          style={{ width: '80%', maxWidth: '500px', padding: '12px 20px', borderRadius: '25px', border: '1px solid #ff4757', outline: 'none' }}
-        />
-      </div>
+      <div className="customer-home">
+        <div className="hero-search-section">
+          <h3>🍕 Šta ti se jede danas?</h3>
+          <input 
+            type="text" 
+            placeholder="Pretraži restorane, kuhinje ili jela..." 
+            className="search-input"
+          />
+        </div>
 
-      <div className="dashboard-grid">
-        <div className="action-card">
-          <div className="card-icon">🏪</div>
-          <h3>Pregled restorana</h3>
-          <p>Istraži dostupne restorane u tvojoj blizini.</p>
+        <div className="dashboard-grid">
+          <div className="action-card">
+            <div className="card-icon">🏪</div>
+            <h3>Pregled restorana</h3>
+            <p>Istraži dostupne restorane u tvojoj blizini.</p>
+          </div>
+          <div className="action-card">
+            <div className="card-icon">📍</div>
+            <h3>Moje adrese</h3>
+            <p>Upravljaj lokacijama za brzu dostavu.</p>
+          </div>
+          <div className="action-card">
+            <div className="card-icon">👤</div>
+            <h3>Moj profil</h3>
+            <p>Ažuriraj lične podatke i preferencije.</p>
+          </div>
         </div>
-        <div className="action-card">
-          <div className="card-icon">📍</div>
-          <h3>Moje adrese</h3>
-          <p>Upravljaj lokacijama za brzu dostavu.</p>
-        </div>
-        <div className="action-card">
-          <div className="card-icon">👤</div>
-          <h3>Moj profil</h3>
-          <p>Ažuriraj lične podatke i preferencije.</p>
-        </div>
-      </div>
 
-      <div className="status-panel">
-        <h4>📦 Poslednja porudžbina</h4>
-        <p style={{ color: '#747d8c', fontStyle: 'italic', margin: 0 }}>Trenutno nemaš aktivnih porudžbina. Vreme je da nešto ukusno naručiš!</p>
+        <div className="status-panel">
+          <h4>📦 Poslednja porudžbina</h4>
+          <p className="empty-status">Trenutno nemaš aktivnih porudžbina. Vreme je da nešto ukusno naručiš!</p>
+        </div>
       </div>
     </DashboardLayout>
   );

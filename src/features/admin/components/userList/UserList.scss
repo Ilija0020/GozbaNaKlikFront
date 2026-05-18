@@ -1,0 +1,66 @@
+@use "../../../../core/styles/abstracts/variables" as *;
+@use "../../../../core/styles/abstracts/mixins" as *;
+
+.user-list-page {
+  padding: $spacing-xl;
+
+  .user-list-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: $color-text-dark;
+    margin-bottom: $spacing-lg;
+  }
+
+  .error-message {
+    color: #d32f2f;
+    font-size: 14px;
+    padding: $spacing-md;
+    background-color: #fff5f5;
+    border-radius: $br-sm;
+    margin-bottom: $spacing-md;
+  }
+}
+
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: $color-white;
+  border-radius: $br-md;
+  box-shadow: $shadow-md;
+  overflow: hidden;
+
+  thead {
+    background-color: $color-primary;
+
+    th {
+      padding: $spacing-md $spacing-lg;
+      text-align: left;
+      font-weight: 600;
+      font-size: 14px;
+      color: $color-white;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  tbody {
+    tr {
+      border-bottom: 1px solid $color-bg-light;
+      transition: background-color 0.2s ease;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      &:hover {
+        background-color: $color-bg-subtle;
+      }
+
+      td {
+        padding: $spacing-md $spacing-lg;
+        color: $color-text-dark;
+        font-size: 15px;
+      }
+    }
+  }
+}

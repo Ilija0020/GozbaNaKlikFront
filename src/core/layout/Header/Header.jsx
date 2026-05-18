@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./Header.scss";
 import { useState } from "react";
-import Toast from "../Toast/Toast";
+import Toast from "../toast/Toast";
 
 const Header = () => {
 

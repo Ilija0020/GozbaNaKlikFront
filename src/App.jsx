@@ -5,6 +5,12 @@ import Login from "./features/auth/pages/Login"
 import Register from "./features/auth/pages/Register"
 import Header from "./core/layout/Header/Header"
 import Footer from "./core/layout/Footer/Footer"
+import ProtectedRoute from "./core/components/ProtectedRoute"
+import CustomerHomePage from "./features/customer/pages/CustomerHomePage";
+import OwnerHomePage from "./features/owner/pages/OwnerHomePage";
+import EmployeeHomePage from "./features/employee/pages/EmployeeHomePage";
+import CourierHomePage from "./features/courier/pages/CourierHomePage";
+import AdminHomePage from "./features/admin/pages/AdminHomePage";
 import "./core/global.scss"
 
 const App = () => {
@@ -17,6 +23,31 @@ const App = () => {
             <Route path="/" element={<WelcomePage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/customer/home" element={
+            <ProtectedRoute allowedRoles={["Customer"]}>
+              <CustomerHomePage />
+                </ProtectedRoute>
+                  } />
+            <Route path="/owner/home" element={
+                <ProtectedRoute allowedRoles={["Owner"]}>
+                  <OwnerHomePage />
+                  </ProtectedRoute>
+                  } />
+            <Route path="/employee/home" element={
+                <ProtectedRoute allowedRoles={["Employee"]}>
+                  <EmployeeHomePage />
+                  </ProtectedRoute>
+                  } />
+            <Route path="/courier/home" element={
+                <ProtectedRoute allowedRoles={["Courier"]}>
+                  <CourierHomePage />
+                  </ProtectedRoute>
+                  } />
+            <Route path="/admin/home" element={
+                <ProtectedRoute allowedRoles={["Admin"]}>
+                  <AdminHomePage />
+                  </ProtectedRoute>
+                  } />
           </Routes>
         </main>
         <Footer />

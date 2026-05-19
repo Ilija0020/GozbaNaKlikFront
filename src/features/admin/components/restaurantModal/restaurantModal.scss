@@ -1,0 +1,148 @@
+@use "../../../../core/styles/abstracts/variables" as *;
+@use "../../../../core/styles/abstracts/mixins" as *;
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.45);
+  @include flex(center, center);
+  z-index: 200;
+  padding: $spacing-md;
+}
+
+.modal {
+  background-color: $color-white;
+  border-radius: $br-md;
+  box-shadow: $shadow-lg;
+  width: 100%;
+  max-width: 480px;
+  padding: $spacing-xl;
+
+  &__header {
+    @include flex(space-between, center);
+    margin-bottom: $spacing-lg;
+  }
+
+  &__title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: $color-text-dark;
+  }
+
+  &__close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: $color-text-light;
+    line-height: 1;
+    padding: 0;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $color-text-dark;
+    }
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-sm;
+
+      label {
+        font-weight: 500;
+        font-size: 0.9rem;
+        color: $color-text-dark;
+      }
+
+      input,
+      select {
+        padding: 11px 14px;
+        border: 1px solid #e0e0e0;
+        border-radius: $br-sm;
+        font-size: 15px;
+        outline: none;
+        transition: border-color 0.2s ease;
+        font-family: inherit;
+        color: $color-text-dark;
+        background-color: $color-white;
+
+        &:focus {
+          border-color: $color-primary;
+        }
+
+        &:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+      }
+
+      .error-message {
+        color: #d32f2f;
+        font-size: 13px;
+      }
+    }
+  }
+
+  &__actions {
+    @include flex(flex-end, center);
+    gap: $spacing-sm;
+    margin-top: $spacing-sm;
+  }
+}
+
+.btn {
+  padding: 10px 22px;
+  border-radius: $br-pill;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+  font-family: inherit;
+
+  &--primary {
+    background-color: $color-primary;
+    color: $color-white;
+
+    &:hover {
+      background-color: $color-primary-dark;
+    }
+
+    &:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+  }
+
+  &--secondary {
+    background-color: transparent;
+    color: $color-text-dark;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+
+    &:hover {
+      background-color: $color-bg-light;
+    }
+
+    &:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+  }
+
+  &--danger {
+    background-color: transparent;
+    color: #d32f2f;
+    border: 1px solid rgba(211, 47, 47, 0.2);
+
+    &:hover {
+      background-color: #fff5f5;
+      border-color: rgba(211, 47, 47, 0.4);
+    }
+  }
+}

@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom"
 import WelcomePage from "./features/auth/pages/WelcomePage"
 import Login from "./features/auth/pages/Login"
 import Register from "./features/auth/pages/Register"
-import Header from "./core/layout/header/Header"
+import Header from "./core/layout/Header/Header"
 import Footer from "./core/layout/footer/Footer"
 import ProtectedRoute from "./core/components/ProtectedRoute"
 import CustomerHomePage from "./features/customer/pages/CustomerHomePage";
@@ -14,6 +14,8 @@ import AdminHomePage from "./features/admin/pages/AdminHomePage";
 import RegisterByAdmin from "./features/admin/pages/RegisterByAdmin"
 import UserList from "./features/admin/components/userList/UserList"
 import "./core/global.scss"
+import RestaurantList from "./features/admin/components/restaurantList/restaurantList";
+
 
 const App = () => {
   return (
@@ -67,6 +69,12 @@ const App = () => {
                 <RegisterByAdmin />
               </ProtectedRoute>
             } />
+
+            <Route path="/admin/restaurants" element={
+              <ProtectedRoute allowedRoles={["Admin"]}>
+                <RestaurantList />
+              </ProtectedRoute>
+} />
 
           </Routes>
         </main>

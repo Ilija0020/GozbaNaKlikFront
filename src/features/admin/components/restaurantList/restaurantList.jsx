@@ -5,7 +5,7 @@ import { restaurantService } from "../../services/restaurantService";
 import { adminService } from "../../services/adminService";
 import "./restaurantList.scss";
 import RestaurantModal from "../restaurantModal/restaurantModal";
-
+//
 const RestaurantList = () => {
   const [restaurants, setRestaurants] = useState(null);
   const [owners, setOwners] = useState([]);

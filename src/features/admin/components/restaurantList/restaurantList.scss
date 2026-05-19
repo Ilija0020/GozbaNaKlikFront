@@ -1,0 +1,101 @@
+@use "../../../../core/styles/abstracts/variables" as *;
+@use "../../../../core/styles/abstracts/mixins" as *;
+
+.restaurant-list-page {
+  &__toolbar {
+    @include flex(space-between, center);
+    margin-bottom: $spacing-lg;
+  }
+
+  &__title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: $color-text-dark;
+    margin: 0;
+  }
+
+  &__error {
+    color: #d32f2f;
+    font-size: 14px;
+    padding: $spacing-md;
+    background-color: #fff5f5;
+    border-radius: $br-sm;
+    margin-bottom: $spacing-md;
+  }
+
+  &__empty {
+    background-color: $color-white;
+    border-radius: $br-md;
+    box-shadow: $shadow-sm;
+    padding: $spacing-xxl;
+    text-align: center;
+    color: $color-text-light;
+    font-size: 0.95rem;
+  }
+}
+
+.restaurant-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: $color-white;
+  border-radius: $br-md;
+  box-shadow: $shadow-md;
+  overflow: hidden;
+
+  thead {
+    background-color: $color-primary;
+
+    th {
+      padding: $spacing-md $spacing-lg;
+      text-align: left;
+      font-weight: 600;
+      font-size: 14px;
+      color: $color-white;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  tbody {
+    tr {
+      border-bottom: 1px solid $color-bg-light;
+      transition: background-color 0.2s ease;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      &:hover {
+        background-color: $color-bg-subtle;
+      }
+
+      td {
+        padding: $spacing-md $spacing-lg;
+        color: $color-text-dark;
+        font-size: 15px;
+        vertical-align: middle;
+      }
+    }
+  }
+
+  &__name {
+    font-weight: 600;
+  }
+
+  &__actions {
+    @include flex(flex-start, center);
+    gap: $spacing-sm;
+  }
+
+  &__confirm {
+    @include flex(flex-start, center);
+    gap: $spacing-sm;
+    flex-wrap: wrap;
+  }
+
+  &__confirm-text {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #d32f2f;
+  }
+}

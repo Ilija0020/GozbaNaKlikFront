@@ -41,6 +41,11 @@ const AdminHomePage = () => {
             <h3>Registruj Kurira</h3>
             <p>Dodaj novog dostavljača u sistem dostave.</p>
           </Link>
+          <Link to="/admin/restaurants" className="action-card">
+            <div className="card-icon">🍽️</div>
+            <h3>Restorani</h3>
+            <p>Pregled, kreiranje, izmena i brisanje restorana.</p>
+          </Link>
         </div>
 
         <div className="status-panel">

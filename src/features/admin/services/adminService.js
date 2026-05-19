@@ -1,3 +1,4 @@
+import { get } from "react-hook-form";
 import AxiosConfig from "../../../core/services/apiAxios";
 
 const RESOURCE = '/api/User';
@@ -12,7 +13,13 @@ const getAllUsers = async () => {
   }
 };
 
+const getOwners = async () => {
+  const response = await AxiosConfig.get(`${RESOURCE}/owners`);
+  return response.data;
+};
+
 export const adminService = {
-  getAllUsers
+  getAllUsers,
+  getOwners,
 };
 

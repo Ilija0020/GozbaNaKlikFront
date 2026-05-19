@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./Header.scss";
 import { useState } from "react";
 import Toast from "../toast/Toast";
+import { getHomeRouteByRole } from "../../utils/roleUtils";
 
 const Header = () => {
 
@@ -31,8 +32,20 @@ const Header = () => {
         </Link>
         <nav className="header__nav">
           {user ? (
-            <button onClick={handleLogout}
-            className="header__btn header__btn--login">Odjavi se</button>
+  <>
+          <Link
+            to={getHomeRouteByRole(user.role)}
+            className="header__btn header__btn--login"
+          >
+            Početna
+          </Link>
+              <button
+                onClick={handleLogout}
+                className="header__btn header__btn--register"
+              >
+                Odjavi se
+              </button>
+            </>
           ) : (
             <>
               <Link to="/login" className="header__btn header__btn--login">Prijava</Link>

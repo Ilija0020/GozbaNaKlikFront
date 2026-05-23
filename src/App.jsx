@@ -14,7 +14,7 @@ import AdminHomePage from "./features/admin/pages/AdminHomePage";
 import RegisterByAdmin from "./features/admin/pages/RegisterByAdmin"
 import UserList from "./features/admin/components/userList/UserList"
 import "./core/global.scss"
-import RestaurantList from "./features/admin/components/restaurantList/restaurantList";
+import RestaurantList from "./features/admin/components/restaurantList/RestaurantList";
 
 
 const App = () => {

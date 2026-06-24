@@ -12,6 +12,7 @@ const OwnerRestaurantEditForm = ({ restaurant, onSave, onCancel }) => {
 
   const fileInputRef = useRef(null);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const [photoError, setPhotoError] = useState("");
 
   useEffect(() => {
     if (restaurant) {
@@ -21,6 +22,7 @@ const OwnerRestaurantEditForm = ({ restaurant, onSave, onCancel }) => {
         description: restaurant.description || "",
       });
       setSelectedPhoto(null);
+      setPhotoError("");
     }
   }, [restaurant, reset]);
 
@@ -37,6 +39,13 @@ const OwnerRestaurantEditForm = ({ restaurant, onSave, onCancel }) => {
     const file = event.target.files?.[0];
 
     if (file) {
+      const error = validatePhoto(file);
+      if (error) {
+        setPhotoError(error);
+        setSelectedPhoto(null);
+        return;
+      }
+      setPhotoError("");
       setSelectedPhoto(file);
     }
   };
@@ -48,6 +57,13 @@ const OwnerRestaurantEditForm = ({ restaurant, onSave, onCancel }) => {
     const file = event.dataTransfer.files?.[0];
 
     if (file) {
+      const error = validatePhoto(file);
+      if (error) {
+        setPhotoError(error);
+        setSelectedPhoto(null);
+        return;
+      }
+      setPhotoError("");
       setSelectedPhoto(file);
     }
   };
@@ -55,6 +71,19 @@ const OwnerRestaurantEditForm = ({ restaurant, onSave, onCancel }) => {
   const preventFileOpen = (event) => {
     event.preventDefault();
     event.stopPropagation();
+  };
+
+  const validatePhoto = (file) => {
+    const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+    const maxSize = 5 * 1024 * 1024;
+
+    if (!allowedTypes.includes(file.type)) {
+      return "Dozvoljeni su samo JPG, PNG i WEBP formati.";
+    }
+    if (file.size > maxSize) {
+      return "Slika mora biti manja od 5MB.";
+    }
+    return "";
   };
 
   return (
@@ -74,7 +103,13 @@ const OwnerRestaurantEditForm = ({ restaurant, onSave, onCancel }) => {
         >
           <div className="owner-restaurant-edit-form__header">
             <h4>Izmena restorana: {restaurant.name}</h4>
-            <button type="button" onClick={onCancel} disabled={isSubmitting}>
+            <button
+              type="button"
+              className="owner-restaurant-edit-form__close"
+              onClick={onCancel}
+              disabled={isSubmitting}
+              aria-label="Zatvori formu"
+            >
               ×
             </button>
           </div>
@@ -117,13 +152,16 @@ const OwnerRestaurantEditForm = ({ restaurant, onSave, onCancel }) => {
             <label>Slika restorana</label>
 
             <div
-              className="file-upload"
+              className={`file-upload ${selectedPhoto ? "file-upload--selected" : ""}`}
               onClick={() => fileInputRef.current?.click()}
               onDragOver={preventFileOpen}
               onDrop={handleFileDrop}
               role="button"
               tabIndex={0}
             >
+              {photoError && (
+                <span className="error-message">{photoError}</span>
+              )}
               <input
                 ref={fileInputRef}
                 type="file"
@@ -136,7 +174,9 @@ const OwnerRestaurantEditForm = ({ restaurant, onSave, onCancel }) => {
                 Izaberi ili prevuci sliku
               </span>
               <span className="file-upload__text">
-                {selectedPhoto ? selectedPhoto.name : "JPG, PNG ili WEBP do 5MB"}
+                {selectedPhoto
+                  ? selectedPhoto.name
+                  : "JPG, PNG ili WEBP do 5MB"}
               </span>
             </div>
           </div>

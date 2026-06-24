@@ -32,18 +32,35 @@
     justify-content: space-between;
     align-items: center;
     gap: $spacing-md;
+  }
 
-    button {
-      border: none;
-      background: transparent;
-      font-size: 1.5rem;
-      line-height: 1;
-      cursor: pointer;
-      color: $color-text-light;
+  &__close {
+    width: 34px;
+    height: 34px;
+    border: 1px solid #e5e7eb;
+    border-radius: $br-sm;
+    background-color: $color-white;
+    color: $color-text-light;
+    font-size: 1.35rem;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease,
+      color 0.2s ease;
 
-      &:hover {
-        color: $color-text-dark;
-      }
+    &:hover {
+      background-color: #fff1f2;
+      border-color: #fecdd3;
+      color: #dc2626;
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
     }
   }
 
@@ -119,6 +136,11 @@
       font-size: 0.9rem;
       color: $color-text-light;
     }
+  }
+
+  .file-upload--selected {
+    border-color: $color-primary;
+    background-color: rgba(32, 150, 99, 0.06);
   }
 
   .error-message {

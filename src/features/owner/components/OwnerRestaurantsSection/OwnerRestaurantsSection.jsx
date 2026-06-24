@@ -11,6 +11,8 @@ const OwnerRestaurantsSection = () => {
   const [restaurants, setRestaurants] = useState([]);
   const [selectedRestaurant, setSelectedRestaurant] = useState(null);
 
+  const [brokenImageIds, setBrokenImageIds] = useState([]);
+
   const [isLoading, setIsLoading] = useState(true);
   const [toastMessage, setToastMessage] = useState("");
   const [toastType, setToastType] = useState("success");
@@ -41,6 +43,16 @@ const OwnerRestaurantsSection = () => {
 
     loadRestaurants();
   }, []);
+
+  useEffect(() => {
+    if (!toastMessage) return;
+
+    const timer = setTimeout(() => {
+      setToastMessage("");
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [toastMessage]);
 
   const handleEditClick = (restaurant) => {
     setSelectedRestaurant(restaurant);
@@ -113,13 +125,20 @@ const OwnerRestaurantsSection = () => {
             return (
               <article className="owner-restaurant-card" key={restaurant.id}>
                 <div className="owner-restaurant-card__image">
-                  {restaurant.photo ? (
+                  {restaurant.photo &&
+                  !brokenImageIds.includes(restaurant.id) ? (
                     <img
                       src={`${API_BASE_URL}${restaurant.photo}`}
                       alt={restaurant.name}
+                      onError={() =>
+                        setBrokenImageIds((previousIds) => [
+                          ...previousIds,
+                          restaurant.id,
+                        ])
+                      }
                     />
                   ) : (
-                    <span>No image</span>
+                    <span>Nema slike</span>
                   )}
                 </div>
 
@@ -129,7 +148,7 @@ const OwnerRestaurantsSection = () => {
                     {restaurant.address}
                   </p>
                   <p className="owner-restaurant-card__description">
-                    {restaurant.description}
+                    {restaurant.description || "Ovaj restoran nema opis."}
                   </p>
 
                   <div className="owner-restaurant-card__actions">

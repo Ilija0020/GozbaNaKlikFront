@@ -3,13 +3,17 @@ import "./OwnerRestaurantsSection.scss";
 import { ownerRestaurantService } from "../../services/ownerRestaurantService";
 import Spinner from "../../../../core/layout/spinner/Spinner";
 import Toast from "../../../../core/layout/Toast/Toast";
+import OwnerRestaurantEditForm from "../OwnerRestaurantEditForm/OwnerRestaurantEditForm";
 
 const API_BASE_URL = "http://localhost:5128";
 
 const OwnerRestaurantsSection = () => {
   const [restaurants, setRestaurants] = useState([]);
+  const [selectedRestaurant, setSelectedRestaurant] = useState(null);
+
   const [isLoading, setIsLoading] = useState(true);
   const [toastMessage, setToastMessage] = useState("");
+  const [toastType, setToastType] = useState("success");
 
   useEffect(() => {
     const loadRestaurants = async () => {
@@ -18,6 +22,7 @@ const OwnerRestaurantsSection = () => {
         const user = userString ? JSON.parse(userString) : null;
 
         if (!user) {
+          setToastType("error");
           setToastMessage("Korisnik nije prijavljen");
           return;
         }
@@ -27,6 +32,7 @@ const OwnerRestaurantsSection = () => {
         );
         setRestaurants(data);
       } catch (err) {
+        setToastType("error");
         setToastMessage("Doslo je do greske pri ucitavanju restorana.");
       } finally {
         setIsLoading(false);
@@ -36,6 +42,49 @@ const OwnerRestaurantsSection = () => {
     loadRestaurants();
   }, []);
 
+  const handleEditClick = (restaurant) => {
+    setSelectedRestaurant(restaurant);
+  };
+
+  const handleSaveRestaurant = async (formData) => {
+    try {
+      const userString = localStorage.getItem("user");
+      const user = userString ? JSON.parse(userString) : null;
+
+      if (!user || !selectedRestaurant) {
+        setToastType("error");
+        setToastMessage("Nije moguce sacuvati izmene");
+        return;
+      }
+      await ownerRestaurantService.updateRestaurantByOwner(
+        selectedRestaurant.id,
+        user.id,
+        {
+          name: formData.name,
+          address: formData.address,
+          description: formData.description,
+        },
+      );
+      if (formData.photo) {
+        await ownerRestaurantService.uploadRestaurantPhoto(
+          selectedRestaurant.id,
+          user.id,
+          formData.photo,
+        );
+      }
+      const updatedRestaurant =
+        await ownerRestaurantService.getRestaurantsByOwner(user.id);
+
+      setRestaurants(updatedRestaurant);
+      setSelectedRestaurant(null);
+      setToastType("success");
+      setToastMessage("Restoran je uspesno izmenjen");
+    } catch (err) {
+      setToastType("error");
+      setToastMessage("Doslo je do greske pri cuvanju restorana.");
+    }
+  };
+
   if (isLoading) {
     return <Spinner />;
   }
@@ -44,7 +93,7 @@ const OwnerRestaurantsSection = () => {
     <div className="owner-restaurants">
       {toastMessage && (
         <Toast
-          type="error"
+          type={toastType}
           message={toastMessage}
           onClose={() => setToastMessage("")}
         />
@@ -84,7 +133,12 @@ const OwnerRestaurantsSection = () => {
                   </p>
 
                   <div className="owner-restaurant-card__actions">
-                    <button type="button">Izmeni</button>
+                    <button
+                      type="button"
+                      onClick={() => handleEditClick(restaurant)}
+                    >
+                      Izmeni
+                    </button>
                     <button type="button">Radno vreme</button>
                     <button type="button">Jelovnik</button>
                   </div>
@@ -93,6 +147,13 @@ const OwnerRestaurantsSection = () => {
             );
           })}
         </div>
+      )}
+      {selectedRestaurant && (
+        <OwnerRestaurantEditForm
+          restaurant={selectedRestaurant}
+          onCancel={() => setSelectedRestaurant(null)}
+          onSave={handleSaveRestaurant}
+        />
       )}
     </div>
   );

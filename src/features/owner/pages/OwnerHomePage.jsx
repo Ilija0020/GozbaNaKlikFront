@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import SideDashboardLayout from "../../../core/layout/DashboardLayout/SideDashboardLayout/SideDashboardLayout";
-import OwnerSideBar from "../components/OwnerSideBar";
+import OwnerSideBar from "../components/OwnerSideBar/OwnerSideBar";
 import "./OwnerHomePage.scss";
+import OwnerRestaurantsSection from "../components/OwnerRestaurantsSection/OwnerRestaurantsSection";
 
 const OwnerHomePage = () => {
   const [activeSection, setActiveSection] = useState("restaurants");
 
   const renderContent = () => {
     if (activeSection === "restaurants") {
-      return <p>Ovde ce biti kartice mojih restorana.</p>;
+      return <OwnerRestaurantsSection />;
     }
     if (activeSection === "employees") {
       return <p>Ovde ce biti kartice mojih zaposlenih.</p>;

@@ -1,5 +1,5 @@
-@use "../../../core/styles/abstracts/variables" as *;
-@use "../../../core/styles/abstracts/mixins" as *;
+@use "../../../../core/styles/abstracts/variables" as *;
+@use "../../../../core/styles/abstracts/mixins" as *;
 
 .owner-sidebar {
   @include flex(flex-start, stretch, column);

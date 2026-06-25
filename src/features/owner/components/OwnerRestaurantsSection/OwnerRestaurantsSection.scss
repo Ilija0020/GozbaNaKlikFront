@@ -60,6 +60,13 @@
     }
   }
 
+  &__content {
+    display: flex;
+    justify-content: space-between;
+    gap: $spacing-md;
+    margin-bottom: $spacing-md;
+  }
+
   &__address {
     margin: 0 0 $spacing-sm;
     color: $color-primary;
@@ -69,6 +76,46 @@
   &__description {
     margin: 0 0 $spacing-md;
     color: $color-text-light;
+  }
+
+  &__working-hours {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    align-self: flex-start;
+    flex-shrink: 0;
+    gap: 4px;
+    padding: 10px 12px;
+    border: 1px solid transparent;
+    border-radius: $br-sm;
+    color: $color-text-dark;
+
+    span {
+      color: $color-text-light;
+      font-size: 0.8rem;
+    }
+
+    strong {
+      font-size: 0.9rem;
+    }
+
+    &--open {
+      border-color: $color-primary;
+      background-color: #ecfdf5;
+
+      strong {
+        color: $color-primary;
+      }
+    }
+
+    &--closed {
+      border-color: #fecaca;
+      background-color: #fef2f2;
+
+      strong {
+        color: #dc2626;
+      }
+    }
   }
 
   &__actions {
@@ -97,6 +144,14 @@
     &__image {
       flex-basis: auto;
       min-height: 180px;
+    }
+
+    &__content {
+      flex-direction: column;
+    }
+
+    &__working-hours {
+      align-self: flex-start;
     }
   }
 }

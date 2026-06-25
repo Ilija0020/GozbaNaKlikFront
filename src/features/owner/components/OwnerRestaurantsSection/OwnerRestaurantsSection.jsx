@@ -8,6 +8,38 @@ import OwnerRestaurantWorkingHoursModal from "../OwnerRestaurantWorkingHoursModa
 
 const API_BASE_URL = "http://localhost:5128";
 
+const getTodayName = () => {
+  const days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+
+  return days[new Date().getDay()];
+};
+
+const formatTime = (time) => {
+  return time.slice(0, 5);
+};
+
+const getTodayWorkingHours = (workingHours) => {
+  const today = getTodayName();
+
+  return workingHours?.find((item) => item.day === today);
+};
+
+const getTodayWorkingHoursText = (workingHours) => {
+  const todayWorkingHours = getTodayWorkingHours(workingHours);
+
+  if (!todayWorkingHours) return "Danas: zatvoreno";
+
+  return `Danas: ${formatTime(todayWorkingHours.startTime)} - ${formatTime(todayWorkingHours.endTime)}`;
+};
+
 const OwnerRestaurantsSection = () => {
   const [restaurants, setRestaurants] = useState([]);
   const [selectedRestaurant, setSelectedRestaurant] = useState(null);
@@ -99,12 +131,34 @@ const OwnerRestaurantsSection = () => {
     }
   };
 
-  const handleSaveWorkingHours = (workingHoursData) => {
-    console.log("Radno vreme za backend: ", workingHoursData);
-    setWorkingHoursRestaurant(null);
+  const handleSaveWorkingHours = async (workingHoursData) => {
+    try {
+      const userString = localStorage.getItem("user");
+      const user = userString ? JSON.parse(userString) : null;
 
-    setToastType("success");
-    setToastMessage("Radno vreme je spremno za cuvanje.");
+      if (!user || !workingHoursRestaurant) {
+        setToastType("error");
+        setToastMessage("Nije moguce sacuvati radno vreme");
+        return;
+      }
+
+      await ownerRestaurantService.updateRestaurantWorkingHours(
+        workingHoursRestaurant.id,
+        user.id,
+        workingHoursData,
+      );
+
+      const updatedRestaurants =
+        await ownerRestaurantService.getRestaurantsByOwner(user.id);
+
+      setRestaurants(updatedRestaurants);
+      setWorkingHoursRestaurant(null);
+      setToastType("success");
+      setToastMessage("Radno vreme je uspesno sacuvano.");
+    } catch (err) {
+      setToastType("error");
+      setToastMessage("Doslo je do greske pri cuvanju radnog vremena.");
+    }
   };
 
   if (isLoading) {
@@ -132,6 +186,10 @@ const OwnerRestaurantsSection = () => {
       ) : (
         <div className="owner-restaurants__list">
           {restaurants.map((restaurant) => {
+            const todayWorkingHours = getTodayWorkingHours(
+              restaurant.workingHours,
+            );
+
             return (
               <article className="owner-restaurant-card" key={restaurant.id}>
                 <div className="owner-restaurant-card__image">
@@ -153,13 +211,30 @@ const OwnerRestaurantsSection = () => {
                 </div>
 
                 <div className="owner-restaurant-card__body">
-                  <h4>{restaurant.name}</h4>
-                  <p className="owner-restaurant-card__address">
-                    {restaurant.address}
-                  </p>
-                  <p className="owner-restaurant-card__description">
-                    {restaurant.description || "Ovaj restoran nema opis."}
-                  </p>
+                  <div className="owner-restaurant-card__content">
+                    <div>
+                      <h4>{restaurant.name}</h4>
+                      <p className="owner-restaurant-card__address">
+                        {restaurant.address}
+                      </p>
+                      <p className="owner-restaurant-card__description">
+                        {restaurant.description || "Ovaj restoran nema opis."}
+                      </p>
+                    </div>
+
+                    <div
+                      className={`owner-restaurant-card__working-hours ${
+                        todayWorkingHours
+                          ? "owner-restaurant-card__working-hours--open"
+                          : "owner-restaurant-card__working-hours--closed"
+                      }`}
+                    >
+                      <span>Radno vreme</span>
+                      <strong>
+                        {getTodayWorkingHoursText(restaurant.workingHours)}
+                      </strong>
+                    </div>
+                  </div>
 
                   <div className="owner-restaurant-card__actions">
                     <button

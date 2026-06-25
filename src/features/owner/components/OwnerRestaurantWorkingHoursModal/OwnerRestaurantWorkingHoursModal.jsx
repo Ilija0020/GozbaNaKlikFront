@@ -13,14 +13,29 @@ const daysOfWeek = [
 
 const OwnerRestaurantWorkingHoursModal = ({ restaurant, onCancel, onSave }) => {
   const [workingHours, setWorkingHours] = useState(
-    daysOfWeek.map((day) => ({
-      day: day.value,
-      label: day.label,
-      isOpen: true,
-      startTime: "08:00",
-      endTime: "22:00",
-    })),
+    daysOfWeek.map((day) => {
+      const existingWorkingHours = restaurant.workingHours?.find(
+        (item) => item.day === day.value,
+      );
+
+      return {
+        day: day.value,
+        label: day.label,
+        isOpen: Boolean(existingWorkingHours),
+        startTime: existingWorkingHours
+          ? existingWorkingHours.startTime.slice(0, 5)
+          : "08:00",
+        endTime: existingWorkingHours
+          ? existingWorkingHours.endTime.slice(0, 5)
+          : "22:00",
+        endsNextDay: existingWorkingHours
+          ? existingWorkingHours.endsNextDay
+          : false,
+      };
+    }),
   );
+
+  const [errors, setErrors] = useState({});
 
   const handleWorkingHoursChange = (day, field, value) => {
     setWorkingHours((currentHours) =>
@@ -33,12 +48,38 @@ const OwnerRestaurantWorkingHoursModal = ({ restaurant, onCancel, onSave }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
+    const newErrors = {};
+
+    workingHours.forEach((item) => {
+      if (!item.isOpen) {
+        return;
+      }
+
+      if (item.endsNextDay && item.startTime <= item.endTime) {
+        newErrors[item.day] =
+          "Ako se zavrsava sutradan, kraj mora biti pre pocetka.";
+        return;
+      }
+
+      if (!item.endsNextDay && item.startTime >= item.endTime) {
+        newErrors[item.day] = "Kraj mora biti posle pocetka.";
+      }
+    });
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    setErrors({});
+
     const workingHoursForBackend = workingHours
       .filter((item) => item.isOpen)
       .map((item) => ({
         day: item.day,
         startTime: `${item.startTime}:00`,
         endTime: `${item.endTime}:00`,
+        endsNextDay: item.endsNextDay,
       }));
 
     onSave(workingHoursForBackend);
@@ -103,6 +144,26 @@ const OwnerRestaurantWorkingHoursModal = ({ restaurant, onCancel, onSave }) => {
                   }
                 />
               </div>
+
+              <label className="working-hours-form__next-day">
+                <input
+                  type="checkbox"
+                  checked={item.endsNextDay}
+                  disabled={!item.isOpen}
+                  onChange={(event) =>
+                    handleWorkingHoursChange(
+                      item.day,
+                      "endsNextDay",
+                      event.target.checked,
+                    )
+                  }
+                />
+                Posle ponoći
+              </label>
+
+              {errors[item.day] && (
+                <p className="working-hours-form__error">{errors[item.day]}</p>
+              )}
             </div>
           ))}
 

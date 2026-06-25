@@ -60,6 +60,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      flex-wrap: wrap;
       gap: $spacing-md;
       padding: $spacing-sm;
       border: 1px solid #e8e8e8;
@@ -95,6 +96,46 @@
       span {
         color: $color-text-light;
       }
+    }
+
+    &__next-day {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 160px;
+      color: $color-text-light;
+      font-size: 0.9rem;
+      cursor: pointer;
+      user-select: none;
+
+      input {
+        width: 16px;
+        height: 16px;
+        accent-color: $color-primary;
+        cursor: pointer;
+
+        &:disabled {
+          cursor: not-allowed;
+        }
+      }
+
+      &:has(input:checked) {
+        color: $color-primary;
+        font-weight: 600;
+      }
+
+      &:has(input:disabled) {
+        opacity: 0.55;
+        cursor: not-allowed;
+      }
+    }
+
+    &__error {
+      flex-basis: 100%;
+      margin: 0;
+      color: #dc2626;
+      font-size: 0.85rem;
+      font-weight: 600;
     }
 
     &__actions {

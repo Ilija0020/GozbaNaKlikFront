@@ -4,7 +4,7 @@ import Spinner from "../../../../core/layout/spinner/Spinner";
 import { restaurantService } from "../../services/restaurantService";
 import { adminService } from "../../services/adminService";
 import "./restaurantList.scss";
-import RestaurantModal from "../restaurantModal/restaurantModal";
+import RestaurantModal from "../restaurantModal/RestaurantModal";
 //
 const RestaurantList = () => {
   const [restaurants, setRestaurants] = useState(null);

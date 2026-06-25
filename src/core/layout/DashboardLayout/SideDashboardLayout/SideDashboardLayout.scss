@@ -1,0 +1,61 @@
+@use "../../../styles/abstracts/variables" as *;
+@use "../../../styles/abstracts/mixins" as *;
+
+.side-dashboard {
+  display: flex;
+  gap: $spacing-lg;
+  max-width: 1280px;
+  width: 100%;
+  margin: $spacing-lg auto;
+  padding: 0 $spacing-lg;
+
+  &__sidebar {
+    flex: 0 0 260px;
+    background-color: $color-white;
+    border: 1px solid #e8e8e8;
+    border-radius: $br-sm;
+    box-shadow: $shadow-sm;
+    padding: $spacing-md;
+    height: fit-content;
+    position: sticky;
+    top: $spacing-lg;
+  }
+
+  &__main {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__header {
+    background-color: $color-white;
+    border: 1px solid #e8e8e8;
+    border-left: 5px solid $color-primary;
+    border-radius: $br-sm;
+    box-shadow: $shadow-sm;
+    padding: $spacing-lg;
+    margin-bottom: $spacing-lg;
+
+    h2 {
+      margin: 0;
+      color: $color-text-light;
+    }
+  }
+
+  &__content {
+    background-color: $color-white;
+    border: 1px solid #e8e8e8;
+    border-radius: $br-sm;
+    box-shadow: $shadow-sm;
+    padding: $spacing-lg;
+  }
+
+  @include respond-to($bp-tablet) {
+    flex-direction: column;
+
+    &__sidebar {
+      position: static;
+      flex-basis: auto;
+      width: 100%;
+    }
+  }
+}

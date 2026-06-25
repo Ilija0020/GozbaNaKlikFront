@@ -1,0 +1,33 @@
+@use "../../../../core/styles/abstracts/variables" as *;
+@use "../../../../core/styles/abstracts/mixins" as *;
+
+.owner-sidebar {
+  @include flex(flex-start, stretch, column);
+  gap: $spacing-sm;
+
+  button {
+    width: 100%;
+    padding: 12px $spacing-md;
+    border: none;
+    border-radius: $br-sm;
+    background-color: transparent;
+    color: $color-text-dark;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease;
+
+    &:hover {
+      background-color: $color-bg-light;
+      color: $color-primary;
+    }
+
+    &.active {
+      background-color: $color-primary;
+      color: $color-white;
+    }
+  }
+}

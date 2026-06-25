@@ -1,6 +1,6 @@
 import AxiosConfig from "../../../core/services/apiAxios";
 
-const RESOURCE = "/api/Restaurant";
+const RESOURCE = "/api/Restaurants";
 
 const getAllRestaurants = async () => {
   const response = await AxiosConfig.get(RESOURCE);

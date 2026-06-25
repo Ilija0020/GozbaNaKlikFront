@@ -22,6 +22,10 @@ const getTodayName = () => {
   return days[new Date().getDay()];
 };
 
+const getTodayDate = () => {
+  return new Date().toISOString().slice(0, 10);
+};
+
 const formatTime = (time) => {
   return time.slice(0, 5);
 };
@@ -32,12 +36,24 @@ const getTodayWorkingHours = (workingHours) => {
   return workingHours?.find((item) => item.day === today);
 };
 
-const getTodayWorkingHoursText = (workingHours) => {
-  const todayWorkingHours = getTodayWorkingHours(workingHours);
+const isTodayNonWorkingDay = (nonWorkingDays) => {
+  const today = getTodayDate();
+
+  return nonWorkingDays?.some((item) => item.date === today);
+};
+
+const getTodayWorkingHoursText = (restaurant) => {
+  if (isTodayNonWorkingDay(restaurant.nonWorkingDays)) {
+    return "Danas: neradni dan";
+  }
+
+  const todayWorkingHours = getTodayWorkingHours(restaurant.workingHours);
 
   if (!todayWorkingHours) return "Danas: zatvoreno";
 
-  return `Danas: ${formatTime(todayWorkingHours.startTime)} - ${formatTime(todayWorkingHours.endTime)}`;
+  const nextDayText = todayWorkingHours.endsNextDay ? " (posle ponoci)" : "";
+
+  return `Danas: ${formatTime(todayWorkingHours.startTime)} - ${formatTime(todayWorkingHours.endTime)}${nextDayText}`;
 };
 
 const OwnerRestaurantsSection = () => {
@@ -131,7 +147,7 @@ const OwnerRestaurantsSection = () => {
     }
   };
 
-  const handleSaveWorkingHours = async (workingHoursData) => {
+  const handleSaveWorkingHours = async (scheduleData) => {
     try {
       const userString = localStorage.getItem("user");
       const user = userString ? JSON.parse(userString) : null;
@@ -145,7 +161,13 @@ const OwnerRestaurantsSection = () => {
       await ownerRestaurantService.updateRestaurantWorkingHours(
         workingHoursRestaurant.id,
         user.id,
-        workingHoursData,
+        scheduleData.workingHours,
+      );
+
+      await ownerRestaurantService.updateRestaurantNonWorkingDays(
+        workingHoursRestaurant.id,
+        user.id,
+        scheduleData.nonWorkingDays,
       );
 
       const updatedRestaurants =
@@ -154,10 +176,10 @@ const OwnerRestaurantsSection = () => {
       setRestaurants(updatedRestaurants);
       setWorkingHoursRestaurant(null);
       setToastType("success");
-      setToastMessage("Radno vreme je uspesno sacuvano.");
+      setToastMessage("Raspored restorana je uspesno sacuvan.");
     } catch (err) {
       setToastType("error");
-      setToastMessage("Doslo je do greske pri cuvanju radnog vremena.");
+      setToastMessage("Doslo je do greske pri cuvanju rasporeda restorana.");
     }
   };
 
@@ -188,6 +210,9 @@ const OwnerRestaurantsSection = () => {
           {restaurants.map((restaurant) => {
             const todayWorkingHours = getTodayWorkingHours(
               restaurant.workingHours,
+            );
+            const todayNonWorkingDay = isTodayNonWorkingDay(
+              restaurant.nonWorkingDays,
             );
 
             return (
@@ -224,15 +249,13 @@ const OwnerRestaurantsSection = () => {
 
                     <div
                       className={`owner-restaurant-card__working-hours ${
-                        todayWorkingHours
+                        todayWorkingHours && !todayNonWorkingDay
                           ? "owner-restaurant-card__working-hours--open"
                           : "owner-restaurant-card__working-hours--closed"
                       }`}
                     >
                       <span>Radno vreme</span>
-                      <strong>
-                        {getTodayWorkingHoursText(restaurant.workingHours)}
-                      </strong>
+                      <strong>{getTodayWorkingHoursText(restaurant)}</strong>
                     </div>
                   </div>
 

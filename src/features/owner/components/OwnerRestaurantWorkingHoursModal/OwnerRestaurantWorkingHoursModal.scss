@@ -51,6 +51,37 @@
     }
   }
 
+  .working-hours-tabs {
+    display: flex;
+    gap: $spacing-sm;
+    margin-bottom: $spacing-md;
+    padding: 4px;
+    border-radius: $br-sm;
+    background-color: $color-white;
+    border: 1px solid #e8e8e8;
+
+    button {
+      flex: 1;
+      border: none;
+      border-radius: $br-sm;
+      padding: 10px 14px;
+      background-color: transparent;
+      color: $color-text-light;
+      font-weight: 600;
+      cursor: pointer;
+
+      &:hover {
+        background-color: $color-bg-light;
+        color: $color-text-dark;
+      }
+
+      &.active {
+        background-color: $color-primary;
+        color: $color-white;
+      }
+    }
+  }
+
   .working-hours-form {
     display: flex;
     flex-direction: column;
@@ -74,6 +105,10 @@
       gap: $spacing-sm;
       font-weight: 600;
       color: $color-text-dark;
+
+      input {
+        accent-color: $color-primary;
+      }
     }
 
     &__time-inputs {
@@ -154,6 +189,102 @@
 
         &:hover {
           background-color: $color-primary-dark;
+        }
+      }
+    }
+  }
+
+  .non-working-days {
+    padding: $spacing-md;
+    border: 1px solid #e8e8e8;
+    border-radius: $br-sm;
+    background-color: $color-white;
+
+    &__header {
+      margin-bottom: $spacing-md;
+
+      h5 {
+        margin: 0;
+        color: $color-text-dark;
+        font-size: 1rem;
+      }
+
+      p {
+        margin: 4px 0 0;
+        color: $color-text-light;
+        font-size: 0.9rem;
+      }
+    }
+
+    &__controls {
+      display: flex;
+      gap: $spacing-sm;
+      margin-bottom: $spacing-md;
+
+      input {
+        flex: 1;
+        border: 1px solid #dedede;
+        border-radius: $br-sm;
+        padding: 10px 12px;
+        font: inherit;
+      }
+
+      button {
+        border: none;
+        border-radius: $br-sm;
+        padding: 10px 16px;
+        background-color: $color-primary;
+        color: $color-white;
+        font-weight: 600;
+        cursor: pointer;
+
+        &:hover {
+          background-color: $color-primary-dark;
+        }
+      }
+    }
+
+    &__empty {
+      margin: 0;
+      color: $color-text-light;
+      font-size: 0.9rem;
+    }
+
+    &__list {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-sm;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    &__item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: $spacing-sm;
+      padding: 10px 12px;
+      border: 1px solid #e8e8e8;
+      border-radius: $br-sm;
+      background-color: $color-bg-light;
+
+      span {
+        color: $color-text-dark;
+        font-weight: 600;
+      }
+
+      button {
+        border: 1px solid #fecaca;
+        border-radius: $br-sm;
+        padding: 7px 12px;
+        background-color: #fef2f2;
+        color: #dc2626;
+        font-weight: 600;
+        cursor: pointer;
+
+        &:hover {
+          background-color: #fee2e2;
         }
       }
     }

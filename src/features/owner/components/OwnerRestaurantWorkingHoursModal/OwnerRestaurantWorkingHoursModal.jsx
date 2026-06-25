@@ -37,11 +37,32 @@ const OwnerRestaurantWorkingHoursModal = ({ restaurant, onCancel, onSave }) => {
 
   const [errors, setErrors] = useState({});
 
+  const [nonWorkingDays, setNonWorkingDays] = useState(
+    restaurant.nonWorkingDays?.map((item) => item.date) || [],
+  );
+  const [newNonWorkingDate, setNewNonWorkingDate] = useState("");
+  const [activeTab, setActiveTab] = useState("working-hours");
+
   const handleWorkingHoursChange = (day, field, value) => {
     setWorkingHours((currentHours) =>
       currentHours.map((item) =>
         item.day === day ? { ...item, [field]: value } : item,
       ),
+    );
+  };
+
+  const handleAddNonWorkingDay = () => {
+    if (!newNonWorkingDate) return;
+
+    if (nonWorkingDays.includes(newNonWorkingDate)) return;
+
+    setNonWorkingDays((currentDays) => [...currentDays, newNonWorkingDate]);
+    setNewNonWorkingDate("");
+  };
+
+  const handleRemoveNonWorkingDay = (date) => {
+    setNonWorkingDays((currentDays) =>
+      currentDays.filter((item) => item !== date),
     );
   };
 
@@ -82,7 +103,14 @@ const OwnerRestaurantWorkingHoursModal = ({ restaurant, onCancel, onSave }) => {
         endsNextDay: item.endsNextDay,
       }));
 
-    onSave(workingHoursForBackend);
+    const nonWorkingDaysForBackend = nonWorkingDays.map((date) => ({
+      date,
+    }));
+
+    onSave({
+      workingHours: workingHoursForBackend,
+      nonWorkingDays: nonWorkingDaysForBackend,
+    });
   };
   return (
     <div className="owner-working-hours-modal" onClick={onCancel}>
@@ -97,75 +125,141 @@ const OwnerRestaurantWorkingHoursModal = ({ restaurant, onCancel, onSave }) => {
           </button>
         </div>
 
+        <div className="working-hours-tabs">
+          <button
+            type="button"
+            className={activeTab === "working-hours" ? "active" : ""}
+            onClick={() => setActiveTab("working-hours")}
+          >
+            Radno vreme
+          </button>
+
+          <button
+            type="button"
+            className={activeTab === "non-working-days" ? "active" : ""}
+            onClick={() => setActiveTab("non-working-days")}
+          >
+            Neradni dani
+          </button>
+        </div>
+
         <form className="working-hours-form" onSubmit={handleSubmit}>
-          {workingHours.map((item) => (
-            <div className="working-hours-form__row" key={item.day}>
-              <label className="working-hours-form__day">
-                <input
-                  type="checkbox"
-                  checked={item.isOpen}
-                  onChange={(event) =>
-                    handleWorkingHoursChange(
-                      item.day,
-                      "isOpen",
-                      event.target.checked,
-                    )
-                  }
-                />
-                {item.label}
-              </label>
+          {activeTab === "working-hours" && (
+            <>
+              {workingHours.map((item) => (
+                <div className="working-hours-form__row" key={item.day}>
+                  <label className="working-hours-form__day">
+                    <input
+                      type="checkbox"
+                      checked={item.isOpen}
+                      onChange={(event) =>
+                        handleWorkingHoursChange(
+                          item.day,
+                          "isOpen",
+                          event.target.checked,
+                        )
+                      }
+                    />
+                    {item.label}
+                  </label>
 
-              <div className="working-hours-form__time-inputs">
-                <input
-                  type="time"
-                  value={item.startTime}
-                  disabled={!item.isOpen}
-                  onChange={(event) =>
-                    handleWorkingHoursChange(
-                      item.day,
-                      "startTime",
-                      event.target.value,
-                    )
-                  }
-                />
+                  <div className="working-hours-form__time-inputs">
+                    <input
+                      type="time"
+                      value={item.startTime}
+                      disabled={!item.isOpen}
+                      onChange={(event) =>
+                        handleWorkingHoursChange(
+                          item.day,
+                          "startTime",
+                          event.target.value,
+                        )
+                      }
+                    />
 
-                <span>do</span>
+                    <span>do</span>
 
-                <input
-                  type="time"
-                  value={item.endTime}
-                  disabled={!item.isOpen}
-                  onChange={(event) =>
-                    handleWorkingHoursChange(
-                      item.day,
-                      "endTime",
-                      event.target.value,
-                    )
-                  }
-                />
+                    <input
+                      type="time"
+                      value={item.endTime}
+                      disabled={!item.isOpen}
+                      onChange={(event) =>
+                        handleWorkingHoursChange(
+                          item.day,
+                          "endTime",
+                          event.target.value,
+                        )
+                      }
+                    />
+                  </div>
+
+                  <label className="working-hours-form__next-day">
+                    <input
+                      type="checkbox"
+                      checked={item.endsNextDay}
+                      disabled={!item.isOpen}
+                      onChange={(event) =>
+                        handleWorkingHoursChange(
+                          item.day,
+                          "endsNextDay",
+                          event.target.checked,
+                        )
+                      }
+                    />
+                    Posle ponoći
+                  </label>
+
+                  {errors[item.day] && (
+                    <p className="working-hours-form__error">
+                      {errors[item.day]}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </>
+          )}
+
+          {/* Non-working days section */}
+          {activeTab === "non-working-days" && (
+            <div className="non-working-days">
+              <div className="non-working-days__header">
+                <h5>Neradni dani</h5>
+                <p>Datumi kada restoran ne radi.</p>
               </div>
 
-              <label className="working-hours-form__next-day">
+              <div className="non-working-days__controls">
                 <input
-                  type="checkbox"
-                  checked={item.endsNextDay}
-                  disabled={!item.isOpen}
-                  onChange={(event) =>
-                    handleWorkingHoursChange(
-                      item.day,
-                      "endsNextDay",
-                      event.target.checked,
-                    )
-                  }
+                  type="date"
+                  value={newNonWorkingDate}
+                  onChange={(event) => setNewNonWorkingDate(event.target.value)}
                 />
-                Posle ponoći
-              </label>
 
-              {errors[item.day] && (
-                <p className="working-hours-form__error">{errors[item.day]}</p>
+                <button type="button" onClick={handleAddNonWorkingDay}>
+                  Dodaj
+                </button>
+              </div>
+
+              {nonWorkingDays.length === 0 ? (
+                <p className="non-working-days__empty">
+                  Nema dodatih neradnih dana.
+                </p>
+              ) : (
+                <ul className="non-working-days__list">
+                  {nonWorkingDays.map((date) => (
+                    <li className="non-working-days__item" key={date}>
+                      <span>{date}</span>
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveNonWorkingDay(date)}
+                      >
+                        Ukloni
+                      </button>
+                    </li>
+                  ))}
+                </ul>
               )}
             </div>
-          ))}
+          )}
 
           <div className="working-hours-form__actions">
             <button type="submit">Sacuvaj</button>

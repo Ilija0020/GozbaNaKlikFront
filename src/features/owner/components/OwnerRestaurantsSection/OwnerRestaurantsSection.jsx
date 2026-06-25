@@ -4,12 +4,14 @@ import { ownerRestaurantService } from "../../services/ownerRestaurantService";
 import Spinner from "../../../../core/layout/spinner/Spinner";
 import Toast from "../../../../core/layout/Toast/Toast";
 import OwnerRestaurantEditForm from "../OwnerRestaurantEditForm/OwnerRestaurantEditForm";
+import OwnerRestaurantWorkingHoursModal from "../OwnerRestaurantWorkingHoursModal/OwnerRestaurantWorkingHoursModal";
 
 const API_BASE_URL = "http://localhost:5128";
 
 const OwnerRestaurantsSection = () => {
   const [restaurants, setRestaurants] = useState([]);
   const [selectedRestaurant, setSelectedRestaurant] = useState(null);
+  const [workingHoursRestaurant, setWorkingHoursRestaurant] = useState(null);
 
   const [brokenImageIds, setBrokenImageIds] = useState([]);
 
@@ -97,6 +99,14 @@ const OwnerRestaurantsSection = () => {
     }
   };
 
+  const handleSaveWorkingHours = (workingHoursData) => {
+    console.log("Radno vreme za backend: ", workingHoursData);
+    setWorkingHoursRestaurant(null);
+
+    setToastType("success");
+    setToastMessage("Radno vreme je spremno za cuvanje.");
+  };
+
   if (isLoading) {
     return <Spinner />;
   }
@@ -158,7 +168,12 @@ const OwnerRestaurantsSection = () => {
                     >
                       Izmeni
                     </button>
-                    <button type="button">Radno vreme</button>
+                    <button
+                      type="button"
+                      onClick={() => setWorkingHoursRestaurant(restaurant)}
+                    >
+                      Radno vreme
+                    </button>
                     <button type="button">Jelovnik</button>
                   </div>
                 </div>
@@ -172,6 +187,13 @@ const OwnerRestaurantsSection = () => {
           restaurant={selectedRestaurant}
           onCancel={() => setSelectedRestaurant(null)}
           onSave={handleSaveRestaurant}
+        />
+      )}
+      {workingHoursRestaurant && (
+        <OwnerRestaurantWorkingHoursModal
+          restaurant={workingHoursRestaurant}
+          onCancel={() => setWorkingHoursRestaurant(null)}
+          onSave={handleSaveWorkingHours}
         />
       )}
     </div>

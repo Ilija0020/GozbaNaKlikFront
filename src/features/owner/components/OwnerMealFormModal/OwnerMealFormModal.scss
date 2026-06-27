@@ -1,0 +1,334 @@
+@use "../../../../core/styles/abstracts/variables" as *;
+@use "../../../../core/styles/abstracts/mixins" as *;
+
+.owner-meal-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-lg;
+  background-color: rgba(15, 23, 42, 0.35);
+
+  &__content {
+    width: 100%;
+    max-width: 900px;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+}
+
+.owner-meal-form {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+  padding: $spacing-lg;
+  border: 1px solid #e8e8e8;
+  border-radius: $br-sm;
+  background-color: $color-bg-light;
+  box-shadow: $shadow-lg;
+
+  &__header {
+    @include flex(space-between, center);
+    gap: $spacing-md;
+
+    h4 {
+      margin: 0;
+      color: $color-text-dark;
+    }
+  }
+
+  &__close {
+    @include flex(center, center);
+    width: 34px;
+    height: 34px;
+    border: 1px solid #e5e7eb;
+    border-radius: $br-sm;
+    background-color: $color-white;
+    color: $color-text-light;
+    font-size: 1.35rem;
+    line-height: 1;
+    cursor: pointer;
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease,
+      color 0.2s ease;
+
+    &:hover {
+      border-color: #fecdd3;
+      background-color: #fff1f2;
+      color: #dc2626;
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+
+  &__layout {
+    display: flex;
+    align-items: flex-start;
+    gap: $spacing-lg;
+  }
+
+  &__fields {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+  }
+
+  &__price-input {
+    display: flex;
+
+    input {
+      flex: 1;
+      min-width: 0;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    > span {
+      display: flex;
+      align-items: center;
+      padding: 0 14px;
+      border: 1px solid #dedede;
+      border-left: 0;
+      border-top-right-radius: $br-sm;
+      border-bottom-right-radius: $br-sm;
+      background-color: $color-bg-light;
+      color: $color-text-dark;
+      font-weight: 700;
+    }
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+
+    label {
+      color: $color-text-dark;
+      font-weight: 600;
+    }
+
+    .required-mark {
+      color: #dc2626;
+    }
+
+    .field-hint {
+      color: $color-text-light;
+      font-size: 0.85rem;
+    }
+
+    input,
+    textarea {
+      padding: 10px 12px;
+      border: 1px solid #dedede;
+      border-radius: $br-sm;
+      outline: none;
+      background-color: $color-white;
+      color: $color-text-dark;
+      font: inherit;
+
+      &:focus {
+        border-color: $color-primary;
+      }
+
+      &:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+      }
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+  }
+
+  &__allergens {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-sm;
+
+    p {
+      margin: 0;
+      color: $color-text-light;
+    }
+  }
+
+  &__allergen {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 10px;
+    border: 1px solid #d7d7d7;
+    border-radius: $br-sm;
+    background-color: $color-white;
+    color: $color-text-dark;
+    cursor: pointer;
+    transition:
+      border-color 0.2s ease,
+      background-color 0.2s ease,
+      color 0.2s ease;
+
+    input {
+      accent-color: $color-primary;
+      cursor: pointer;
+    }
+
+    &:has(input:checked) {
+      border-color: $color-primary;
+      background-color: #ecfdf5;
+      color: $color-primary;
+    }
+  }
+
+  .file-upload {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: $spacing-md;
+    border: 1px dashed #cfcfcf;
+    border-radius: $br-sm;
+    background-color: $color-white;
+    cursor: pointer;
+    transition:
+      border-color 0.2s ease,
+      background-color 0.2s ease;
+
+    &:hover {
+      border-color: $color-primary;
+      background-color: rgba(32, 150, 99, 0.04);
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    &__title {
+      color: $color-text-dark;
+      font-weight: 600;
+    }
+
+    &__text {
+      color: $color-text-light;
+      font-size: 0.9rem;
+    }
+  }
+
+  .file-upload--selected {
+    border-color: $color-primary;
+    background-color: rgba(32, 150, 99, 0.06);
+  }
+
+  .error-message {
+    color: #d32f2f;
+    font-size: 0.85rem;
+  }
+
+  &__preview {
+    flex: 0 0 310px;
+    padding: $spacing-md;
+    border: 1px solid #e8e8e8;
+    border-radius: $br-sm;
+    background-color: $color-white;
+
+    h5 {
+      margin: $spacing-md 0 4px;
+      color: $color-text-dark;
+      font-size: 1.1rem;
+    }
+
+    strong {
+      display: block;
+      margin-bottom: $spacing-md;
+      color: $color-primary;
+    }
+  }
+
+  &__preview-label {
+    display: block;
+    margin-bottom: $spacing-sm;
+    color: $color-text-dark;
+    font-weight: 600;
+  }
+
+  &__preview-image {
+    @include flex(center, center);
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: $br-sm;
+    background-color: #ecfdf5;
+    color: $color-text-light;
+    font-weight: 600;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__preview-allergens {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+
+    span {
+      padding: 6px 9px;
+      border: 1px solid #bbf7d0;
+      border-radius: $br-sm;
+      background-color: #ecfdf5;
+      color: $color-primary;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+  }
+
+  &__actions {
+    @include flex(flex-end, center);
+    gap: $spacing-sm;
+
+    button {
+      @include button-base;
+      padding: 10px 18px;
+      border-radius: $br-sm;
+      background-color: $color-primary;
+      color: $color-white;
+      font-weight: 600;
+
+      &:hover {
+        background-color: $color-primary-dark;
+      }
+
+      &:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  @include respond-to($bp-tablet) {
+    padding: $spacing-md;
+
+    &__layout {
+      flex-direction: column;
+    }
+
+    &__preview {
+      flex-basis: auto;
+      width: 100%;
+    }
+
+    &__allergens {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+}

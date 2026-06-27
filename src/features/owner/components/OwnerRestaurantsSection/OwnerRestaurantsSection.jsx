@@ -5,6 +5,7 @@ import Spinner from "../../../../core/layout/spinner/Spinner";
 import Toast from "../../../../core/layout/Toast/Toast";
 import OwnerRestaurantEditForm from "../OwnerRestaurantEditForm/OwnerRestaurantEditForm";
 import OwnerRestaurantWorkingHoursModal from "../OwnerRestaurantWorkingHoursModal/OwnerRestaurantWorkingHoursModal";
+import OwnerMealsSection from "../OwnerMealsSection/OwnerMealsSection";
 
 const API_BASE_URL = "http://localhost:5128";
 
@@ -60,6 +61,7 @@ const OwnerRestaurantsSection = () => {
   const [restaurants, setRestaurants] = useState([]);
   const [selectedRestaurant, setSelectedRestaurant] = useState(null);
   const [workingHoursRestaurant, setWorkingHoursRestaurant] = useState(null);
+  const [menuRestaurant, setMenuRestaurant] = useState(null);
 
   const [brokenImageIds, setBrokenImageIds] = useState([]);
 
@@ -187,6 +189,15 @@ const OwnerRestaurantsSection = () => {
     return <Spinner />;
   }
 
+  if (menuRestaurant) {
+    return (
+      <OwnerMealsSection
+        restaurant={menuRestaurant}
+        onBack={() => setMenuRestaurant(null)}
+      />
+    );
+  }
+
   return (
     <div className="owner-restaurants">
       {toastMessage && (
@@ -272,7 +283,12 @@ const OwnerRestaurantsSection = () => {
                     >
                       Radno vreme
                     </button>
-                    <button type="button">Jelovnik</button>
+                    <button
+                      type="button"
+                      onClick={() => setMenuRestaurant(restaurant)}
+                    >
+                      Jelovnik
+                    </button>
                   </div>
                 </div>
               </article>

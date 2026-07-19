@@ -21,13 +21,9 @@ const OwnerMealsSection = ({ restaurant, onBack }) => {
   useEffect(() => {
     const loadMeals = async () => {
       try {
-        const userString = localStorage.getItem("user");
-        const user = userString ? JSON.parse(userString) : null;
-
-        if (!user || !restaurant) return;
+        if (!restaurant) return;
 
         const mealsData = await ownerMealService.getMealsByRestaurant(
-          user.id,
           restaurant.id,
         );
 
@@ -77,10 +73,7 @@ const OwnerMealsSection = ({ restaurant, onBack }) => {
 
   const handleSaveMeal = async (formData) => {
     try {
-      const userString = localStorage.getItem("user");
-      const user = userString ? JSON.parse(userString) : null;
-
-      if (!user || !restaurant) {
+      if (!restaurant) {
         setToastType("error");
         setToastMessage("Nije moguce sacuvati jelo.");
         return;
@@ -90,7 +83,6 @@ const OwnerMealsSection = ({ restaurant, onBack }) => {
 
       if (selectedMeal) {
         savedMeal = await ownerMealService.updateMeal(
-          user.id,
           restaurant.id,
           selectedMeal.id,
           {
@@ -100,24 +92,17 @@ const OwnerMealsSection = ({ restaurant, onBack }) => {
             allergenIds: formData.allergenIds,
           },
         );
-
       } else {
-        savedMeal = await ownerMealService.createMeal(
-          user.id,
-          restaurant.id,
-          {
-            name: formData.name,
-            description: formData.description,
-            price: formData.price,
-            allergenIds: formData.allergenIds,
-          },
-        );
-
+        savedMeal = await ownerMealService.createMeal(restaurant.id, {
+          name: formData.name,
+          description: formData.description,
+          price: formData.price,
+          allergenIds: formData.allergenIds,
+        });
       }
 
       if (formData.photo) {
         savedMeal = await ownerMealService.uploadMealPhoto(
-          user.id,
           restaurant.id,
           savedMeal.id,
           formData.photo,
@@ -125,7 +110,6 @@ const OwnerMealsSection = ({ restaurant, onBack }) => {
       }
 
       const updatedMeals = await ownerMealService.getMealsByRestaurant(
-        user.id,
         restaurant.id,
       );
 
@@ -144,25 +128,21 @@ const OwnerMealsSection = ({ restaurant, onBack }) => {
 
   const handleDeleteMeal = async (meal) => {
     const isConfirmed = window.confirm(
-      `Da li si siguran da zelis da obrises jelo "${meal.name}"?`,
+      `Da li ste sigurni da zelite da obrisete jelo "${meal.name}"?`,
     );
 
     if (!isConfirmed) return;
 
     try {
-      const userString = localStorage.getItem("user");
-      const user = userString ? JSON.parse(userString) : null;
-
-      if (!user || !restaurant) {
+      if (!restaurant) {
         setToastType("error");
         setToastMessage("Nije moguce obrisati jelo.");
         return;
       }
 
-      await ownerMealService.deleteMeal(user.id, restaurant.id, meal.id);
+      await ownerMealService.deleteMeal(restaurant.id, meal.id);
 
       const updatedMeals = await ownerMealService.getMealsByRestaurant(
-        user.id,
         restaurant.id,
       );
 
@@ -252,10 +232,7 @@ const OwnerMealsSection = ({ restaurant, onBack }) => {
                   >
                     Izmeni
                   </button>
-                  <button
-                    type="button"
-                    onClick={() => handleDeleteMeal(meal)}
-                  >
+                  <button type="button" onClick={() => handleDeleteMeal(meal)}>
                     Obriši
                   </button>
                 </div>

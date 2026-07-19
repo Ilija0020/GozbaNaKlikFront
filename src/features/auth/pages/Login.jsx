@@ -1,36 +1,42 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { authService } from "../services/authService";
 import { getHomeRouteByRole } from "../../../core/utils/roleUtils";
+import UserContext from "../../../core/contexts/UserContext";
 
 const Login = () => {
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm();
+  const { setUser } = useContext(UserContext);
   const [serverError, setServerError] = useState("");
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
     try {
       setServerError("");
-      const user = await authService.login(data.username, data.password);
-      
-      const userDataToSave = {
-        id: user.id,
-        username: user.username,
-        role: user.role,
-        name: user.name,
-        surname: user.surname
+      const loginData = {
+        userName: data.username,
+        password: data.password,
       };
+      const token = await authService.login(loginData);
 
-      localStorage.setItem("user", JSON.stringify(userDataToSave));
+      localStorage.setItem("token", token);
 
-      const homeRoute = getHomeRouteByRole(user.role);
-      
+      const payload = JSON.parse(atob(token.split(".")[1]));
+
+      setUser(payload);
+
+      const homeRoute = getHomeRouteByRole(payload.role);
+
       navigate(homeRoute);
-      console.log("Uspesna prijava! Sačuvan korisnik:", userDataToSave);
-      
     } catch (error) {
-      setServerError(error.response?.data || "Došlo je do greške prilikom prijave.");
+      setServerError(
+        error.response?.data?.Message || "Došlo je do greške prilikom prijave.",
+      );
     }
   };
 
@@ -38,31 +44,44 @@ const Login = () => {
     <div className="auth-page">
       <div className="auth-card">
         <h2>Prijava</h2>
-        
+
         <form className="auth-form" onSubmit={handleSubmit(onSubmit)}>
           <div className="form-group">
             <label htmlFor="username">Korisničko ime</label>
-            <input 
-              id="username" 
-              type="text" 
+            <input
+              id="username"
+              type="text"
               disabled={isSubmitting}
-              {...register("username", { required: "Korisničko ime je obavezno" })} 
+              {...register("username", {
+                required: "Korisničko ime je obavezno",
+              })}
             />
-            {errors.username && <span className="error-message">{errors.username.message}</span>}
+            {errors.username && (
+              <span className="error-message">{errors.username.message}</span>
+            )}
           </div>
 
           <div className="form-group">
             <label htmlFor="password">Lozinka</label>
-            <input 
-              id="password" 
-              type="password" 
+            <input
+              id="password"
+              type="password"
               disabled={isSubmitting}
-              {...register("password", { required: "Lozinka je obavezna" })} 
+              {...register("password", { required: "Lozinka je obavezna" })}
             />
-            {errors.password && <span className="error-message">{errors.password.message}</span>}
+            {errors.password && (
+              <span className="error-message">{errors.password.message}</span>
+            )}
           </div>
 
-          {serverError && <div className="error-message" style={{textAlign: "center", marginTop: "10px"}}>{serverError}</div>}
+          {serverError && (
+            <div
+              className="error-message"
+              style={{ textAlign: "center", marginTop: "10px" }}
+            >
+              {serverError}
+            </div>
+          )}
 
           <button type="submit" className="btn-submit" disabled={isSubmitting}>
             {isSubmitting ? "Učitavanje..." : "Prijavi se"}

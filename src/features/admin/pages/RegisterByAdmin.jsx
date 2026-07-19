@@ -28,7 +28,7 @@ const RegisterByAdmin = () => {
         name: data.name,
         surname: data.surname,
         email: data.email,
-        username: data.username,
+        userName: data.username,
         password: data.password,
         role: data.role,
       };

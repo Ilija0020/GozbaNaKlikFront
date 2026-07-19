@@ -1,17 +1,31 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Navigate } from "react-router-dom";
 import { getHomeRouteByRole } from "../utils/roleUtils";
+import UserContext from "../contexts/UserContext";
 
 const ProtectedRoute = ({ allowedRoles, children }) => {
-  const userString = localStorage.getItem("user");
-  const user = userString ? JSON.parse(userString) : null;
+  const { user } = useContext(UserContext);
 
-  if (!user) {
+  const token = localStorage.getItem("token");
+  let currentUser = user;
+
+  if (!currentUser && token) {
+    try {
+      currentUser = JSON.parse(atob(token.split(".")[1]));
+    } catch (error) {
+      console.error("Neispravan token:", error);
+      localStorage.removeItem("token");
+
+      return <Navigate to="/login" replace />;
+    }
+  }
+
+  if (!currentUser) {
     return <Navigate to="/login" replace />;
   }
 
-  if (!allowedRoles.includes(user.role)) {
-    return <Navigate to={getHomeRouteByRole(user.role)} replace />;
+  if (allowedRoles && !allowedRoles.includes(currentUser.role)) {
+    return <Navigate to={getHomeRouteByRole(currentUser.role)} replace />;
   }
 
   return children;

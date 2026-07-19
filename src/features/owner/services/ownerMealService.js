@@ -1,48 +1,51 @@
 import AxiosConfig from "../../../core/services/apiAxios";
 
-const RESOURCE = "/api/Meals";
+const RESTAURANTS_RESOURCE = "/api/restaurants";
+const ALLERGENS_RESOURCE = "/api/meals/allergens";
 
-const getMealsByRestaurant = async (ownerId, restaurantId) => {
+const getMealsByRestaurant = async (restaurantId) => {
   const response = await AxiosConfig.get(
-    `${RESOURCE}/owners/${ownerId}/restaurants/${restaurantId}/meals`,
+    `${RESTAURANTS_RESOURCE}/${restaurantId}/meals`,
   );
   return response.data;
 };
 
 const getAllergens = async () => {
-  const response = await AxiosConfig.get(`${RESOURCE}/allergens`);
+  const response = await AxiosConfig.get(ALLERGENS_RESOURCE);
   return response.data;
 };
 
-const createMeal = async (ownerId, restaurantId, mealData) => {
+const createMeal = async (restaurantId, mealData) => {
   const response = await AxiosConfig.post(
-    `${RESOURCE}/owners/${ownerId}/restaurants/${restaurantId}/meals`,
+    `${RESTAURANTS_RESOURCE}/${restaurantId}/meals`,
     mealData,
   );
   return response.data;
 };
 
-const updateMeal = async (ownerId, restaurantId, mealId, mealData) => {
+const updateMeal = async (restaurantId, mealId, mealData) => {
   const response = await AxiosConfig.put(
-    `${RESOURCE}/owners/${ownerId}/restaurants/${restaurantId}/meals/${mealId}`,
+    `${RESTAURANTS_RESOURCE}/${restaurantId}/meals/${mealId}`,
     mealData,
   );
+
   return response.data;
 };
 
-const deleteMeal = async (ownerId, restaurantId, mealId) => {
+const deleteMeal = async (restaurantId, mealId) => {
   const response = await AxiosConfig.delete(
-    `${RESOURCE}/owners/${ownerId}/restaurants/${restaurantId}/meals/${mealId}`,
+    `${RESTAURANTS_RESOURCE}/${restaurantId}/meals/${mealId}`,
   );
+
   return response.data;
 };
 
-const uploadMealPhoto = async (ownerId, restaurantId, mealId, file) => {
+const uploadMealPhoto = async (restaurantId, mealId, file) => {
   const formData = new FormData();
   formData.append("photo", file);
 
   const response = await AxiosConfig.post(
-    `${RESOURCE}/owners/${ownerId}/restaurants/${restaurantId}/meals/${mealId}/upload-photo`,
+    `${RESTAURANTS_RESOURCE}/${restaurantId}/meals/${mealId}/upload-photo`,
     formData,
   );
 

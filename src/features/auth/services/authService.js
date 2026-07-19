@@ -1,18 +1,9 @@
 import AxiosConfig from "../../../core/services/apiAxios";
 
-const RESOURCE = '/api/Auth';
+const RESOURCE = "/api/Auth";
 
-const login = async (username, password) => {
-
-  const payload = {
-    username: username,
-    password: password,
-    name: "-",
-    surname: "-",
-    email: "test@test.com"
-  };
-
-  const response = await AxiosConfig.post(`${RESOURCE}/login`, payload);
+const login = async (data) => {
+  const response = await AxiosConfig.post(`${RESOURCE}/login`, data);
   return response.data;
 };
 
@@ -22,12 +13,12 @@ const register = async (userData) => {
 };
 
 const registerByAdmin = async (userData) => {
-  const response = await AxiosConfig.post(`${RESOURCE}/register-admin`, userData);
+  const response = await AxiosConfig.post("/api/Users", userData);
   return response.data;
 };
 
 export const authService = {
   login,
   register,
-  registerByAdmin
+  registerByAdmin,
 };

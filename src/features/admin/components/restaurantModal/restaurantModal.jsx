@@ -26,23 +26,23 @@ const RestaurantModal = ({ restaurant, owners, onSave, onClose }) => {
     await onSave({
       name: data.name,
       address: data.address,
-      ownerId: parseInt(data.ownerId),
+      ownerId: data.ownerId,
     });
   };
 
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>
-
         <div className="modal__header">
           <h3 className="modal__title">
             {isEditMode ? "Izmeni restoran" : "Dodaj restoran"}
           </h3>
-          <button className="modal__close" onClick={onClose}>&times;</button>
+          <button className="modal__close" onClick={onClose}>
+            &times;
+          </button>
         </div>
 
         <form className="modal__form" onSubmit={handleSubmit(onSubmit)}>
-
           <div className="form-group">
             <label htmlFor="name">Naziv restorana</label>
             <input
@@ -52,7 +52,9 @@ const RestaurantModal = ({ restaurant, owners, onSave, onClose }) => {
               placeholder="npr. Pizzeria Napoli"
               {...register("name", { required: "Naziv je obavezan" })}
             />
-            {errors.name && <span className="error-message">{errors.name.message}</span>}
+            {errors.name && (
+              <span className="error-message">{errors.name.message}</span>
+            )}
           </div>
 
           <div className="form-group">
@@ -64,7 +66,9 @@ const RestaurantModal = ({ restaurant, owners, onSave, onClose }) => {
               placeholder="npr. Ulica br. 1, Novi Sad"
               {...register("address", { required: "Adresa je obavezna" })}
             />
-            {errors.address && <span className="error-message">{errors.address.message}</span>}
+            {errors.address && (
+              <span className="error-message">{errors.address.message}</span>
+            )}
           </div>
 
           <div className="form-group">
@@ -77,11 +81,13 @@ const RestaurantModal = ({ restaurant, owners, onSave, onClose }) => {
               <option value="">Izaberite vlasnika...</option>
               {owners.map((owner) => (
                 <option key={owner.id} value={owner.id}>
-                  {owner.name} {owner.surname} (@{owner.username})
+                  {owner.name} {owner.surname} (@{owner.userName})
                 </option>
               ))}
             </select>
-            {errors.ownerId && <span className="error-message">{errors.ownerId.message}</span>}
+            {errors.ownerId && (
+              <span className="error-message">{errors.ownerId.message}</span>
+            )}
           </div>
 
           <div className="modal__actions">
@@ -101,11 +107,10 @@ const RestaurantModal = ({ restaurant, owners, onSave, onClose }) => {
               {isSubmitting
                 ? "Cuvanje..."
                 : isEditMode
-                ? "Sacuvaj izmene"
-                : "Dodaj restoran"}
+                  ? "Sacuvaj izmene"
+                  : "Dodaj restoran"}
             </button>
           </div>
-
         </form>
       </div>
     </div>

@@ -72,18 +72,7 @@ const OwnerRestaurantsSection = () => {
   useEffect(() => {
     const loadRestaurants = async () => {
       try {
-        const userString = localStorage.getItem("user");
-        const user = userString ? JSON.parse(userString) : null;
-
-        if (!user) {
-          setToastType("error");
-          setToastMessage("Korisnik nije prijavljen");
-          return;
-        }
-
-        const data = await ownerRestaurantService.getRestaurantsByOwner(
-          user.id,
-        );
+        const data = await ownerRestaurantService.getRestaurantsByOwner();
         setRestaurants(data);
       } catch (err) {
         setToastType("error");
@@ -112,17 +101,13 @@ const OwnerRestaurantsSection = () => {
 
   const handleSaveRestaurant = async (formData) => {
     try {
-      const userString = localStorage.getItem("user");
-      const user = userString ? JSON.parse(userString) : null;
-
-      if (!user || !selectedRestaurant) {
+      if (!selectedRestaurant) {
         setToastType("error");
         setToastMessage("Nije moguce sacuvati izmene");
         return;
       }
       await ownerRestaurantService.updateRestaurantByOwner(
         selectedRestaurant.id,
-        user.id,
         {
           name: formData.name,
           address: formData.address,
@@ -132,14 +117,13 @@ const OwnerRestaurantsSection = () => {
       if (formData.photo) {
         await ownerRestaurantService.uploadRestaurantPhoto(
           selectedRestaurant.id,
-          user.id,
           formData.photo,
         );
       }
-      const updatedRestaurant =
-        await ownerRestaurantService.getRestaurantsByOwner(user.id);
+      const updatedRestaurants =
+        await ownerRestaurantService.getRestaurantsByOwner();
 
-      setRestaurants(updatedRestaurant);
+      setRestaurants(updatedRestaurants);
       setSelectedRestaurant(null);
       setToastType("success");
       setToastMessage("Restoran je uspesno izmenjen");
@@ -151,10 +135,7 @@ const OwnerRestaurantsSection = () => {
 
   const handleSaveWorkingHours = async (scheduleData) => {
     try {
-      const userString = localStorage.getItem("user");
-      const user = userString ? JSON.parse(userString) : null;
-
-      if (!user || !workingHoursRestaurant) {
+      if (!workingHoursRestaurant) {
         setToastType("error");
         setToastMessage("Nije moguce sacuvati radno vreme");
         return;
@@ -162,18 +143,16 @@ const OwnerRestaurantsSection = () => {
 
       await ownerRestaurantService.updateRestaurantWorkingHours(
         workingHoursRestaurant.id,
-        user.id,
         scheduleData.workingHours,
       );
 
       await ownerRestaurantService.updateRestaurantNonWorkingDays(
         workingHoursRestaurant.id,
-        user.id,
         scheduleData.nonWorkingDays,
       );
 
       const updatedRestaurants =
-        await ownerRestaurantService.getRestaurantsByOwner(user.id);
+        await ownerRestaurantService.getRestaurantsByOwner();
 
       setRestaurants(updatedRestaurants);
       setWorkingHoursRestaurant(null);

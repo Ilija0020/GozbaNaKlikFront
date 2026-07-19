@@ -1,28 +1,39 @@
-import React from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "./Header.scss";
-import { useState } from "react";
 import Toast from "../toast/Toast";
 import { getHomeRouteByRole } from "../../utils/roleUtils";
+import UserContext from "../../contexts/UserContext";
 
 const Header = () => {
-
   const [showToast, setShowToast] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation();
-  
-  const userString = localStorage.getItem("user");
-  const user = userString ? JSON.parse(userString) : null;
+  const { user, setUser } = useContext(UserContext);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        setUser(payload);
+      } catch (error) {
+        console.error("Neispravan token:", error);
+        localStorage.removeItem("token");
+      }
+    }
+  }, [setUser]);
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    setUser(null);
     setShowToast(true);
     navigate("/login");
 
     setTimeout(() => {
       setShowToast(false);
     }, 2000);
-  }
+  };
 
   return (
     <header className="header">
@@ -32,13 +43,13 @@ const Header = () => {
         </Link>
         <nav className="header__nav">
           {user ? (
-  <>
-          <Link
-            to={getHomeRouteByRole(user.role)}
-            className="header__btn header__btn--login"
-          >
-            Početna
-          </Link>
+            <>
+              <Link
+                to={getHomeRouteByRole(user.role)}
+                className="header__btn header__btn--login"
+              >
+                Početna
+              </Link>
               <button
                 onClick={handleLogout}
                 className="header__btn header__btn--register"
@@ -48,14 +59,21 @@ const Header = () => {
             </>
           ) : (
             <>
-              <Link to="/login" className="header__btn header__btn--login">Prijava</Link>
-              <Link to="/register" className="header__btn header__btn--register">Registracija</Link>
+              <Link to="/login" className="header__btn header__btn--login">
+                Prijava
+              </Link>
+              <Link
+                to="/register"
+                className="header__btn header__btn--register"
+              >
+                Registracija
+              </Link>
             </>
           )}
         </nav>
       </div>
       {showToast && (
-        <Toast 
+        <Toast
           type="success"
           message="Uspešno ste se odjavili"
           onClose={() => setShowToast(false)}
@@ -63,6 +81,6 @@ const Header = () => {
       )}
     </header>
   );
-}
+};
 
 export default Header;

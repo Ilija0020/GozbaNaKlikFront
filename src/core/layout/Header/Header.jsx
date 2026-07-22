@@ -42,6 +42,9 @@ const Header = () => {
           Gozba<span>NaKlik</span>
         </Link>
         <nav className="header__nav">
+          <Link to="/restaurants" className="header__btn header__btn--login">
+            Restorani
+          </Link>
           {user ? (
             <>
               <Link

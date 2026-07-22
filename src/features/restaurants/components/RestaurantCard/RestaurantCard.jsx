@@ -1,0 +1,33 @@
+import React from "react";
+import localRestaurantLogo from "../../../../assets/local-restaurant-logo.png";
+import "./RestaurantCard.scss";
+import { API_BASE_URL } from "../../../../core/services/apiAxios";
+
+const RestaurantCard = ({ restaurant }) => {
+  const photoSource = restaurant.photo
+    ? `${API_BASE_URL}${restaurant.photo}`
+    : localRestaurantLogo;
+
+  return (
+    <article className="restaurant-card">
+      <div className="restaurant-card__image-wrapper">
+        <img
+          src={photoSource}
+          alt={`Restoran ${restaurant.name}`}
+          className="restaurant-card__image"
+        />
+      </div>
+
+      <div className="restaurant-card__content">
+        <h2 className="restaurant-card__name">{restaurant.name}</h2>
+
+        <p className="restaurant-card__description">
+          {restaurant.description || "Opis restorana nije dostupan."}
+        </p>
+
+        <p className="restaurant-card__address">{restaurant.address}</p>
+      </div>
+    </article>
+  );
+};
+export default RestaurantCard;

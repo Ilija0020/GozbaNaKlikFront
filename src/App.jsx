@@ -16,6 +16,7 @@ import UserList from "./features/admin/components/userList/UserList";
 import "./core/global.scss";
 import RestaurantList from "./features/admin/components/restaurantList/RestaurantList";
 import UserContext from "./core/contexts/UserContext";
+import RestaurantCatalogPage from "./features/restaurants/pages/RestaurantCatalogPage";
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -27,6 +28,7 @@ const App = () => {
           <Header />
           <main className="app-main">
             <Routes>
+              <Route path="/restaurants" element={<RestaurantCatalogPage />} />
               <Route path="/" element={<WelcomePage />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />

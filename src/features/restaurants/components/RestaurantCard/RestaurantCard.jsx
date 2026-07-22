@@ -2,6 +2,7 @@ import React from "react";
 import localRestaurantLogo from "../../../../assets/local-restaurant-logo.png";
 import "./RestaurantCard.scss";
 import { API_BASE_URL } from "../../../../core/services/apiAxios";
+import { Link } from "react-router-dom";
 
 const RestaurantCard = ({ restaurant }) => {
   const photoSource = restaurant.photo
@@ -10,23 +11,25 @@ const RestaurantCard = ({ restaurant }) => {
 
   return (
     <article className="restaurant-card">
-      <div className="restaurant-card__image-wrapper">
-        <img
-          src={photoSource}
-          alt={`Restoran ${restaurant.name}`}
-          className="restaurant-card__image"
-        />
-      </div>
-
-      <div className="restaurant-card__content">
-        <h2 className="restaurant-card__name">{restaurant.name}</h2>
-
-        <p className="restaurant-card__description">
-          {restaurant.description || "Opis restorana nije dostupan."}
-        </p>
-
-        <p className="restaurant-card__address">{restaurant.address}</p>
-      </div>
+      <Link
+        to={`/restaurants/${restaurant.id}`}
+        className="restaurant-card__link"
+      >
+        <div className="restaurant-card__image-wrapper">
+          <img
+            src={photoSource}
+            alt={`Restoran ${restaurant.name}`}
+            className="restaurant-card__image"
+          />
+        </div>
+        <div className="restaurant-card__content">
+          <h2 className="restaurant-card__name">{restaurant.name}</h2>
+          <p className="restaurant-card__description">
+            {restaurant.description || "Opis restorana nije dostupan."}
+          </p>
+          <p className="restaurant-card__address">{restaurant.address}</p>
+        </div>
+      </Link>
     </article>
   );
 };

@@ -46,6 +46,17 @@
     line-height: 1.5;
   }
 
+  &__working-hours {
+    margin: 0 0 $spacing-sm;
+    color: $color-text-dark;
+    font-size: 0.9rem;
+    font-weight: 600;
+
+    &--closed {
+      color: #d32f2f;
+    }
+  }
+
   &__address {
     margin: 0;
     color: $color-text-dark;

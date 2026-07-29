@@ -5,6 +5,7 @@ import { publicRestaurantService } from "../services/publicRestaurantService";
 import MealCard from "../components/MealCard/MealCard";
 import { API_BASE_URL } from "../../../core/services/apiAxios";
 import fallbackRestaurantImage from "../../../assets/local-restaurant-logo.png";
+import { getWorkingHoursText, weekDays } from "../utils/restaurantWorkingHours";
 
 const RestaurantDetailsPage = () => {
   const { restaurantId } = useParams();
@@ -73,6 +74,46 @@ const RestaurantDetailsPage = () => {
           </p>
 
           <p className="restaurant-details__address">{restaurant.address}</p>
+
+          <details className="restaurant-details__working-hours">
+            <summary className="restaurant-details__working-hours-summary">
+              Radno vreme
+            </summary>
+
+            <div className="restaurant-details__working-hours-panel">
+              <div className="restaurant-details__working-hours-list">
+                {weekDays.map((day) => {
+                  const workingHours = restaurant.workingHours?.find(
+                    (item) => item.day === day.value,
+                  );
+
+                  return (
+                    <div
+                      className="restaurant-details__working-hours-row"
+                      key={day.value}
+                    >
+                      <span>{day.label}</span>
+                      <strong>{getWorkingHoursText(workingHours)}</strong>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {restaurant.nonWorkingDays?.length > 0 && (
+                <div className="restaurant-details__non-working-days">
+                  <strong>Posebni neradni dani:</strong>
+
+                  {restaurant.nonWorkingDays.map((nonWorkingDay) => (
+                    <span key={nonWorkingDay.date}>
+                      {new Date(
+                        `${nonWorkingDay.date}T00:00:00`,
+                      ).toLocaleDateString("sr-RS")}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+          </details>
         </div>
       </div>
 

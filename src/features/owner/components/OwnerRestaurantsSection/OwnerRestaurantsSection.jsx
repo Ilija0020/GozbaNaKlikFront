@@ -6,56 +6,13 @@ import Toast from "../../../../core/layout/Toast/Toast";
 import OwnerRestaurantEditForm from "../OwnerRestaurantEditForm/OwnerRestaurantEditForm";
 import OwnerRestaurantWorkingHoursModal from "../OwnerRestaurantWorkingHoursModal/OwnerRestaurantWorkingHoursModal";
 import OwnerMealsSection from "../OwnerMealsSection/OwnerMealsSection";
+import {
+  getTodayWorkingHours,
+  getTodayWorkingHoursText,
+  isTodayNonWorkingDay,
+} from "../../../restaurants/utils/restaurantWorkingHours";
 
 const API_BASE_URL = "http://localhost:5128";
-
-const getTodayName = () => {
-  const days = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
-
-  return days[new Date().getDay()];
-};
-
-const getTodayDate = () => {
-  return new Date().toISOString().slice(0, 10);
-};
-
-const formatTime = (time) => {
-  return time.slice(0, 5);
-};
-
-const getTodayWorkingHours = (workingHours) => {
-  const today = getTodayName();
-
-  return workingHours?.find((item) => item.day === today);
-};
-
-const isTodayNonWorkingDay = (nonWorkingDays) => {
-  const today = getTodayDate();
-
-  return nonWorkingDays?.some((item) => item.date === today);
-};
-
-const getTodayWorkingHoursText = (restaurant) => {
-  if (isTodayNonWorkingDay(restaurant.nonWorkingDays)) {
-    return "Danas: neradni dan";
-  }
-
-  const todayWorkingHours = getTodayWorkingHours(restaurant.workingHours);
-
-  if (!todayWorkingHours) return "Danas: zatvoreno";
-
-  const nextDayText = todayWorkingHours.endsNextDay ? " (posle ponoci)" : "";
-
-  return `Danas: ${formatTime(todayWorkingHours.startTime)} - ${formatTime(todayWorkingHours.endTime)}${nextDayText}`;
-};
 
 const OwnerRestaurantsSection = () => {
   const [restaurants, setRestaurants] = useState([]);
